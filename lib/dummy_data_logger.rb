@@ -1,5 +1,4 @@
+require 'logger'
 require "dummy_data_logger/version"
-
-module DummyDataLogger
-  # Your code goes here...
-end
+require "dummy_data_logger/processor"
+require "dummy_data_logger/worker"
