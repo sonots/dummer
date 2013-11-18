@@ -29,7 +29,7 @@ Sample configuration is as follows:
 configure 'sample' do
   rate 500
   delimiter "\t"
-  labeled false
+  labeled true
   field :id, type: :integer, countup: true
   field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: true
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
@@ -43,9 +43,9 @@ end
 Running dummy_log_generator outputs like
 
 ```
-360     [2031-02-09 15:01:07]   DEBUG   GET     /api/v1/people  1.105236938958904       PcGw8kEi
-361     [1991-08-26 13:03:05]   WARN    GET     /api/v1/people  1.8938518088450287      RGOuoydG
-362     [2037-11-04 15:32:38]   DEBUG   POST    /api/v1/people  2.7431863060457538      rVij0nWP
+id:422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
+id:423  time:[2013-11-19 02:34:58]  level:DEBUG method:GET  uri:/api/v1/people    reqtime:0.49912949125272277 foobar:DcOYrONH
+id:424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata  reqtime:2.930590441869852   foobar:XEZ5bQsh
 ```
 
 ## Configuration Parameters
@@ -58,17 +58,17 @@ Following parameters for configuration is available
 
 * delimiter
 
-    Specify the delimiter between each columns. Default: tab
+    Specify the delimiter between each field. Default: "\t" (Tab)
 
 * labeled
 
-    Add label or not. Default: true
+    Whether add field name as a label or not. Default: true
 
 * field
 
     Define data fields to generate
 
-## Data Types
+## Field Data Types
 
 You can specify following data types to your `field` parameters:
 
@@ -80,7 +80,11 @@ You can specify following data types to your `field` parameters:
 
   * :random
 
-    Generate datetime randomly or not (Time.now). Default: false
+    Generate datetime randomly. Default: false (Time.now)
+
+  * :value
+
+    You can specify a fixed Time object. 
 
 * :string
 
@@ -92,6 +96,10 @@ You can specify following data types to your `field` parameters:
 
     You can specify the length of string to generate randomly
 
+  * :value
+
+    You can specify a fixed string
+
 * :integer
 
   * :range
@@ -102,11 +110,19 @@ You can specify following data types to your `field` parameters:
 
     Generate countup data. Default: false
 
+  * :value
+
+    You can specify a fixed integer
+
 * :float
 
   * :range
 
-    You can specify a range of integers, then the generator picks one in the range (uniform) randomly
+    You can specify a range of float numbers, then the generator picks one in the range (uniform) randomly
+
+  * :value
+
+    You can specify a fixed float number
 
 ## Relatives
 

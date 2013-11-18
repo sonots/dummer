@@ -38,16 +38,20 @@ module DummyLogGenerator
       @chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a # no symbols and multi-bytes for now
     end
 
-    def string(length: 8, any: nil, prev: nil)
-      if any
+    def string(length: 8, any: nil, prev: nil, value: nil)
+      if value
+        value.to_s
+      elsif any
         self.any(any)
       else
         Array.new(length){@chars[rand(@chars.size-1)]}.join
       end
     end
 
-    def integer(range: nil, countup: false, prev: nil)
-      if range
+    def integer(range: nil, countup: false, prev: nil, value: nil)
+      if value
+        value.to_i
+      elsif range
         self.range(range)
       elsif countup
         prev ||= -1
@@ -57,8 +61,10 @@ module DummyLogGenerator
       end
     end
 
-    def float(range: nil, prev: nil)
-      if range
+    def float(range: nil, prev: nil, value: nil)
+      if value
+        value.to_f
+      elsif range
         self.range(range)
       else
         r = rand(1..358)
@@ -66,8 +72,10 @@ module DummyLogGenerator
       end
     end
 
-    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, prev: nil)
-      time = if random
+    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, prev: nil, value: nil)
+      time = if value
+               value
+             elsif random
                y = rand(1970..2037);
                m = rand(1..12);
                d = rand(1..27);

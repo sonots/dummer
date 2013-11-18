@@ -1,11 +1,10 @@
 module DummyLogGenerator
   class Formatter
-    attr_accessor :labeled, :delimiter, :fields
+    attr_accessor :labeled, :delimiter
 
     def initialize
       @labeled = true
       @delimiter = "\t"
-      @fields = {}
     end
 
     def format(fields)
