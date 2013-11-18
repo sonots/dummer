@@ -1,4 +1,4 @@
-# DummyDataGenerator
+# DummyLogGenerator
 
 Generates dummy log data for Fluentd benchmark 
 
@@ -6,7 +6,7 @@ Generates dummy log data for Fluentd benchmark
 
 Add this line to your application's Gemfile:
 
-    gem 'dummy_data_generator'
+    gem 'dummy_log_generator'
 
 And then execute:
 
@@ -14,18 +14,18 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install dummy_data_generator
+    $ gem install dummy_log_generator
 
 Run as
 
-    $ dummy_data_generator -c dummy_data_generator.conf
+    $ dummy_log_generator -c dummy_data_generator.conf
 
 ## Usage
 
 Sample configuration is as follows:
 
 ```ruby
-# dummy_data_generator.conf
+# dummy_log_generator.conf
 configure 'sample' do
   rate 500
   delimiter "\t"
@@ -39,7 +39,7 @@ configure 'sample' do
 end 
 ```
 
-Running dummy_data_generator outputs like
+Running dummy_log_generator outputs like
 
 ```
 [1984-05-25 05:10:03]   DEBUG   GET     /api/v1/people  4.451362369925074       fl8nmh4f

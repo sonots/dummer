@@ -1,6 +1,6 @@
 require 'serverengine'
 
-module DummyDataGenerator
+module DummyLogGenerator
   module Worker
     def initialize
       reload

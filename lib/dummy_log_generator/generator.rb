@@ -1,11 +1,11 @@
-module DummyDataGenerator
+module DummyLogGenerator
   class Generator
     attr_reader :formatter
     attr_reader :rand
 
     def initialize(formatter)
       @formatter = formatter
-      @rand = ::DummyDataGenerator::Random.new
+      @rand = ::DummyLogGenerator::Random.new
     end
 
     def generate

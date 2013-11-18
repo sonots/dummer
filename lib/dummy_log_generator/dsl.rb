@@ -1,4 +1,4 @@
-module DummyDataGenerator
+module DummyLogGenerator
   class Config
     attr_accessor :rate
 
@@ -26,7 +26,7 @@ module DummyDataGenerator
   end
 end
 
-module DummyDataGenerator
+module DummyLogGenerator
   class Dsl
     attr_reader :formatter
     attr_reader :config
@@ -55,7 +55,7 @@ module DummyDataGenerator
 end
 
 def configure(title, &block)
-  dsl = DummyDataGenerator::Dsl.new
+  dsl = DummyLogGenerator::Dsl.new
   dsl.instance_eval(&block)
   dsl
 end

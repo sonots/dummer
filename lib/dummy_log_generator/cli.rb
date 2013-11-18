@@ -1,10 +1,10 @@
 require 'thor'
-require 'dummy_data_generator'
+require 'dummy_log_generator'
 require 'active_support/core_ext'
 
-module DummyDataGenerator
+module DummyLogGenerator
   class CLI < Thor
-    class_option :config, :aliases => ["-c"], :type => :string, :default => 'dummy_data_generator.conf'
+    class_option :config, :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf'
     default_command :start
 
     def initialize(args = [], opts = [], config = {})
@@ -18,11 +18,11 @@ module DummyDataGenerator
       end
     end
 
-    desc "start", "Start a dummy_data_generator"
+    desc "start", "Start a dummy_log_generator"
     option :require,     :aliases => ["-r"], :type => :string
     option :daemonize,   :aliases => ["-d"], :type => :boolean
-    option :module_name, :aliases => ["-m"], :type => :string, :default => 'DummyDataGenerator::Worker'
-    # options for dummy_data_generator
+    option :module_name, :aliases => ["-m"], :type => :string, :default => 'DummyLogGenerator::Worker'
+    # options for dummy_log_generator
     option :rate,        :aliases => ["-i"], :type => :numeric
     def start
       opts = @options.symbolize_keys.except(:require, :config, :module_name)
@@ -31,7 +31,7 @@ module DummyDataGenerator
       se.run
     end
 
-    desc "stop", "Stops a dummy_data_generator"
+    desc "stop", "Stops a dummy_log_generator"
     option :pid_path,    :aliases => ["-p"], :type => :string
     def stop
       pid = File.read(@options["pid_path"]).to_i
@@ -40,11 +40,11 @@ module DummyDataGenerator
         Process.kill("QUIT", pid)
         puts "Stopped #{pid}"
       rescue Errno::ESRCH
-        puts "DummyDataGenerator #{pid} not running"
+        puts "DummyLogGenerator #{pid} not running"
       end
     end
 
-    desc "graceful_stop", "Gracefully stops a dummy_data_generator"
+    desc "graceful_stop", "Gracefully stops a dummy_log_generator"
     option :pid_path,    :aliases => ["-p"], :type => :string
     def graceful_stop
       pid = File.read(@options["pid_path"]).to_i
@@ -53,11 +53,11 @@ module DummyDataGenerator
         Process.kill("TERM", pid)
         puts "Gracefully stopped #{pid}"
       rescue Errno::ESRCH
-        puts "DummyDataGenerator #{pid} not running"
+        puts "DummyLogGenerator #{pid} not running"
       end
     end
 
-    desc "restart", "Restarts a dummy_data_generator"
+    desc "restart", "Restarts a dummy_log_generator"
     option :pid_path,    :aliases => ["-p"], :type => :string
     def restart
       pid = File.read(@options["pid_path"]).to_i
@@ -66,11 +66,11 @@ module DummyDataGenerator
         Process.kill("HUP", pid)
         puts "Restarted #{pid}"
       rescue Errno::ESRCH
-        puts "DummyDataGenerator #{pid} not running"
+        puts "DummyLogGenerator #{pid} not running"
       end
     end
 
-    desc "graceful_restart", "Graceful restarts a dummy_data_generator"
+    desc "graceful_restart", "Graceful restarts a dummy_log_generator"
     option :pid_path,    :aliases => ["-p"], :type => :string
     def graceful_restart
       pid = File.read(@options["pid_path"]).to_i
@@ -79,11 +79,11 @@ module DummyDataGenerator
         Process.kill("USR1", pid)
         puts "Gracefully restarted #{pid}"
       rescue Errno::ESRCH
-        puts "DummyDataGenerator #{pid} not running"
+        puts "DummyLogGenerator #{pid} not running"
       end
     end
 
   end
 end
 
-DummyDataGenerator::CLI.start(ARGV)
+DummyLogGenerator::CLI.start(ARGV)
