@@ -62,15 +62,20 @@ module DummyDataGenerator
       end
     end
 
-    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N")
-      y = rand(1970..2037);
-      m = rand(1..12);
-      d = rand(1..27);
-      h = rand(0..23);
-      min = rand(0..59);
-      s = rand(0..59);
-      usec = rand(0..999999);
-      Time.local(y, m, d, h, min, s, usec).strftime(format)
+    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false)
+      time = if random
+               y = rand(1970..2037);
+               m = rand(1..12);
+               d = rand(1..27);
+               h = rand(0..23);
+               min = rand(0..59);
+               s = rand(0..59);
+               usec = rand(0..999999);
+               Time.local(y, m, d, h, min, s, usec)
+             else
+               Time.now
+             end
+      time.strftime(format)
     end
 
     def range(range)

@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = DummyDataGenerator::VERSION
   spec.authors       = ["sonots"]
   spec.email         = ["sonots@gmail.com"]
-  spec.description   = %q{Generates dummy data for Fluentd benchmark}
-  spec.summary       = %q{Generates dummy data for Fluentd benchmark}
+  spec.description   = %q{Generates dummy log data for Fluentd benchmark}
+  spec.summary       = %q{Generates dummy log data for Fluentd benchmark}
   spec.homepage      = "https://github.com/sonots/dummy_data_generator"
   spec.license       = "MIT"
 

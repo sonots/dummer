@@ -1,6 +1,6 @@
 # DummyDataGenerator
 
-Generates dummy log data.
+Generates dummy log data for Fluentd benchmark 
 
 ## Installation
 
@@ -30,7 +30,7 @@ configure 'sample' do
   rate 500
   delimiter "\t"
   labeled false
-  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]"
+  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: true
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
   field :method, type: :string, any: %w[GET POST PUT]
   field :uri, type: :string, any: %w[/api/v1/people /api/v1/textdata /api/v1/messages]
@@ -77,6 +77,10 @@ You can specify following data types to your `field` parameters:
 
     You can specify format of datetime as `%Y-%m-%d %H:%M:%S`. See [Time#strftime](http://www.ruby-doc.org/core-2.0.0/Time.html#method-i-strftime) for details. 
 
+  * :random
+
+    Generate datetime randomly or not (Time.now). Default: false
+
 * :string
 
   * :any
@@ -101,7 +105,7 @@ You can specify following data types to your `field` parameters:
 
 ## Relatives
 
-There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummydata to a log file. 
+There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummydata to a log file as a standalone tool.
 
 ## Contributing
 
