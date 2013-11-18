@@ -1,3 +1,9 @@
+### 0.0.3
+
+Enhancement:
+
+  * Add `value` option to specify fixed value
+
 ### 0.0.2
 
 Enhancement:
