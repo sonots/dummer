@@ -105,12 +105,13 @@ You can specify following data types to your `field` parameters:
 
 ## Relatives
 
-There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummydata to a log file as a standalone tool.
+There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummy data to a log file, and I wanted a standalone tool.
 
 ## ToDO
 
 1. write tests
 2. make it slim (remove active_support, etc)
+3. outputs to a file (currently, outputs to STDOUT)
 
 ## Contributing
 
