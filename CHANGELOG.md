@@ -1,3 +1,9 @@
+### 0.0.4
+
+Enhancement:
+
+  * Add `format` option to `string`, `integer`, `float` data type
+
 ### 0.0.3
 
 Enhancement:
