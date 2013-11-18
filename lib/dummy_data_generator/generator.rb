@@ -9,23 +9,23 @@ module DummyDataGenerator
     end
 
     def generate
-      generated = formatter.params.each_with_object([]) do |(key, format), ret|
-        val = if format == :datetime
-                rand_datetime
-              elsif format == :string
-                rand_string
-              elsif format == :integer
-                rand_integer
-              elsif format.class == Range
-                rand_range(format)
-              elsif format.class == Array
-                rand_array(format)
-              else
-                format
-              end
-        ret << (formatter.labeled? ? "#{key}:#{val}" : val)
+      params = {}
+      formatter.params.each do |key, value|
+        params[key] = if value == :datetime
+                        rand_datetime
+                      elsif value == :string
+                        rand_string
+                      elsif value == :integer
+                        rand_integer
+                      elsif value.class == Range
+                        rand_range(value)
+                      elsif value.class == Array
+                        rand_array(value)
+                      else
+                        value
+                      end
       end
-      formatter.header + generated.join(formatter.delimiter) + formatter.footer
+      formatter.output(params)
     end
     alias_method :gen, :generate
 

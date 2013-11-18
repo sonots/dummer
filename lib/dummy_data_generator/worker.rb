@@ -8,7 +8,8 @@ module DummyDataGenerator
 
     def reload
       @rate = config[:rate] || 500 # msgs / sec
-      @processor = Processor.new(config)
+      @formatter = config[:formatter]
+      @generator = Generator.new(@formatter)
     end
 
     def run
@@ -19,7 +20,8 @@ module DummyDataGenerator
 
         while !@stop && rate_count < @rate && Time.now.to_i == current_time
           batch_num.times do
-            STDOUT.puts @processor.generate
+            # ToDo: what if generation is slower than I/O?
+            STDOUT.puts @generator.generate
           end
           rate_count += batch_num
           sleep 0.1

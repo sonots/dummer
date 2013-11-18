@@ -10,9 +10,11 @@ module DummyDataGenerator
     def initialize(args = [], opts = [], config = {})
       super(args, opts, config)
 
+      @options = @options.dup # avoid frozen
       if options[:config] && File.exists?(options[:config])
-        config = instance_eval(File.read(options[:config]), options[:config])
-        @options = config.merge(@options)
+        dsl = instance_eval(File.read(options[:config]), options[:config])
+        @options[:formatter] = dsl.formatter
+        @options[:rate]      = dsl.config.rate
       end
     end
 
@@ -22,9 +24,8 @@ module DummyDataGenerator
     option :module_name, :aliases => ["-m"], :type => :string, :default => 'DummyDataGenerator::Worker'
     # options for dummy_data_generator
     option :rate,        :aliases => ["-i"], :type => :numeric
-    option :format       :aliases => ["-f"], :type => :stirng
     def start
-      opts = @options.symbolize_keys.except(:require, :config, :rate, :module_name)
+      opts = @options.symbolize_keys.except(:require, :config, :module_name)
 
       se = ServerEngine.create(nil, @options["module_name"].constantize, opts)
       se.run
