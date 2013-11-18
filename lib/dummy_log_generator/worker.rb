@@ -7,11 +7,12 @@ module DummyLogGenerator
     end
 
     def reload
-      @rate = config[:rate] || 500 # msgs / sec
+      @rate = config[:rate]
       @formatter = config[:formatter]
       @generator = Generator.new(@formatter)
     end
 
+    # thanks! ref. https://github.com/tagomoris/fluent-plugin-dummydata-producer/blob/a550fd4424f71cd9227e138c3c89f600ba40a0d5/lib/fluent/plugin/in_dummydata_producer.rb#L63
     def run
       batch_num = (@rate / 9).to_i + 1
       while !@stop
@@ -21,6 +22,7 @@ module DummyLogGenerator
         while !@stop && rate_count < @rate && Time.now.to_i == current_time
           batch_num.times do
             # ToDo: what if generation is slower than I/O?
+            # We may should generate data and output in parallel
             STDOUT.puts @generator.generate
           end
           rate_count += batch_num
