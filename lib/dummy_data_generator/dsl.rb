@@ -12,8 +12,8 @@ module DummyDataGenerator
       config.rate = rate
     end
 
-    def params(params)
-      formatter.params = params
+    def field(name, opts)
+      formatter.fields[name] = opts
     end
 
     def delimiter(delimiter)

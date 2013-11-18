@@ -1,11 +1,11 @@
 module DummyDataGenerator
   class Formatter
-    attr_accessor :labeled, :delimiter, :params
+    attr_accessor :labeled, :delimiter, :fields
 
     def initialize
       @labeled = true
       @delimiter = "\t"
-      @params = {}
+      @fields = {}
     end
 
     def output(generated_params)

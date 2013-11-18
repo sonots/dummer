@@ -29,23 +29,22 @@ Sample configuration is as follows:
 configure 'sample' do
   rate 500
   delimiter "\t"
-  labeled true
-  params :time => :datetime,
-         :level => %w[DEBUG INFO WARN ERROR],
-         :method => %w[GET POST PUT],
-         :uri => %w[/api/v1/people /api/v1/textdata /api/v1/messages],
-         :reqtime => 0.1..5.0
+  labeled false
+  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]"
+  field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
+  field :method, type: :string, any: %w[GET POST PUT]
+  field :uri, type: :string, any: %w[/api/v1/people /api/v1/textdata /api/v1/messages]
+  field :reqtime, type: :float, range: 0.1..5.0
+  field :foobar, type: :string, length: 8
 end 
 ```
 
 Running dummy_data_generator outputs like
 
 ```
-time:2031-06-18 18:18:00        level:INFO      method:POST     uri:/api/v1/people      reqtime:1.197221723342187
-time:1996-05-09 18:37:00        level:INFO      method:POST     uri:/api/v1/people      reqtime:3.271667783792904
-time:1987-07-09 06:58:00        level:WARN      method:POST     uri:/api/v1/textdata    reqtime:3.1576537349315683
-time:1995-07-11 19:45:00        level:DEBUG     method:POST     uri:/api/v1/textdata    reqtime:3.6156928236603902
-time:2017-08-09 04:49:00        level:DEBUG     method:GET      uri:/api/v1/people      reqtime:4.262477727171734
+[1984-05-25 05:10:03]   DEBUG   GET     /api/v1/people  4.451362369925074       fl8nmh4f
+[2027-11-04 02:58:01]   INFO    GET     /api/v1/people  3.984084722909503       WhsvwEeF
+[1973-02-17 09:09:34]   WARN    GET     /api/v1/people  2.290704255755689       3UyK3jgi
 ```
 
 ## Configuration Parameters
@@ -64,27 +63,41 @@ Following parameters for configuration is available
 
     Add label or not. Default: true
 
-* params
+* field
 
-    This is the main format of your data
+    Define data fields to generate
 
 ## Data Types
 
-You can specify following data types to your `params` parameters:
+You can specify following data types to your `field` parameters:
 
 * :datetime
 
+  * :format
+
+    You can specify format of datetime as `%Y-%m-%d %H:%M:%S`. See [Time#strftime](http://www.ruby-doc.org/core-2.0.0/Time.html#method-i-strftime) for details. 
+
 * :string
+
+  * :any
+
+    You can specify an array of strings, then the generator picks one from them randomly
+
+  * :length
+
+    You can specify the length of string to generate randomly
 
 * :integer
 
-* Array
+  * :range
 
-  Pick one from the given array (uniform) randomly
+    You can specify a range of integers, then the generator picks one in the range (uniform) randomly
 
-* Range
+* :float
 
-  Pick one from the given range (uniform) randomly
+  * :range
+
+    You can specify a range of integers, then the generator picks one in the range (uniform) randomly
 
 ## Contributing
 
