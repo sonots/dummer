@@ -1,4 +1,4 @@
-# DummyDataLogger
+# DummyDataGenerator
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'dummy_data_logger'
+    gem 'dummy_data_generator'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install dummy_data_logger
+    $ gem install dummy_data_generator
 
 ## Usage
 
