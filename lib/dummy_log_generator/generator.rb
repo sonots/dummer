@@ -1,32 +1,33 @@
 module DummyLogGenerator
   class Generator
-    attr_reader :formatter
+    attr_accessor :fields
     attr_reader :rand
 
-    def initialize(formatter)
-      @formatter = formatter
+    def initialize
+      @fields = {}
       @rand = ::DummyLogGenerator::Random.new
     end
 
-    def generate
-      fields = {}
-      formatter.fields.each do |key, opts|
+    def generate(prev_data = {})
+      data = {}
+      fields.each do |key, opts|
         opts = opts.dup
         type = opts.delete(:type)
-        fields[key] = case type
-                      when :datetime
-                        rand.datetime(opts)
-                      when :string
-                        rand.string(opts)
-                      when :integer
-                        rand.integer(opts)
-                      when :float
-                        rand.float(opts)
-                      else
-                        raise ConfigError.new(type)
-                      end
+        opts[:prev] = prev_data[key]
+        data[key] = case type
+                    when :datetime
+                      rand.datetime(opts)
+                    when :string
+                      rand.string(opts)
+                    when :integer
+                      rand.integer(opts)
+                    when :float
+                      rand.float(opts)
+                    else
+                      raise ConfigError.new(type)
+                    end
       end
-      formatter.output(fields)
+      data
     end
     alias_method :gen, :generate
   end
@@ -37,24 +38,27 @@ module DummyLogGenerator
       @chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a # no symbols and multi-bytes for now
     end
 
-    def string(length: 8, any: nil)
-      unless any.nil?
+    def string(length: 8, any: nil, prev: nil)
+      if any
         self.any(any)
       else
         Array.new(length){@chars[rand(@chars.size-1)]}.join
       end
     end
 
-    def interger(range: nil)
-      unless range.nil?
+    def integer(range: nil, countup: false, prev: nil)
+      if range
         self.range(range)
+      elsif countup
+        prev ||= -1
+        prev + 1
       else
         rand(0..2,147,483,647)
       end
     end
 
-    def float(range: nil)
-      unless range.nil?
+    def float(range: nil, prev: nil)
+      if range
         self.range(range)
       else
         r = rand(1..358)
@@ -62,7 +66,7 @@ module DummyLogGenerator
       end
     end
 
-    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false)
+    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, prev: nil)
       time = if random
                y = rand(1970..2037);
                m = rand(1..12);

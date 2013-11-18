@@ -13,6 +13,7 @@ module DummyLogGenerator
       @options = @options.dup # avoid frozen
       if options[:config] && File.exists?(options[:config])
         dsl = instance_eval(File.read(options[:config]), options[:config])
+        @options[:generator] = dsl.generator
         @options[:formatter] = dsl.formatter
         @options[:rate]      = dsl.config.rate
       end

@@ -6,32 +6,16 @@ module DummyLogGenerator
       @rate = 500
     end
   end
-
-  class Formatter
-    attr_accessor :labeled, :delimiter, :fields
-
-    def initialize
-      @labeled = true
-      @delimiter = "\t"
-      @fields = {}
-    end
-
-    def output(generated_params)
-      if labeled
-        generated_params.map {|key, val| "#{key}:#{val}" }.join(delimiter)
-      else
-        generated_params.values.join(delimiter)
-      end
-    end
-  end
 end
 
 module DummyLogGenerator
   class Dsl
+    attr_reader :generator
     attr_reader :formatter
     attr_reader :config
 
     def initialize
+      @generator = Generator.new
       @formatter = Formatter.new
       @config = Config.new
     end
@@ -41,7 +25,7 @@ module DummyLogGenerator
     end
 
     def field(name, opts)
-      formatter.fields[name] = opts
+      generator.fields[name] = opts
     end
 
     def delimiter(delimiter)

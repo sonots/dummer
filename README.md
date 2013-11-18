@@ -30,6 +30,7 @@ configure 'sample' do
   rate 500
   delimiter "\t"
   labeled false
+  field :id, type: :integer, countup: true
   field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: true
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
   field :method, type: :string, any: %w[GET POST PUT]
@@ -42,9 +43,9 @@ end
 Running dummy_log_generator outputs like
 
 ```
-[1984-05-25 05:10:03]   DEBUG   GET     /api/v1/people  4.451362369925074       fl8nmh4f
-[2027-11-04 02:58:01]   INFO    GET     /api/v1/people  3.984084722909503       WhsvwEeF
-[1973-02-17 09:09:34]   WARN    GET     /api/v1/people  2.290704255755689       3UyK3jgi
+360     [2031-02-09 15:01:07]   DEBUG   GET     /api/v1/people  1.105236938958904       PcGw8kEi
+361     [1991-08-26 13:03:05]   WARN    GET     /api/v1/people  1.8938518088450287      RGOuoydG
+362     [2037-11-04 15:32:38]   DEBUG   POST    /api/v1/people  2.7431863060457538      rVij0nWP
 ```
 
 ## Configuration Parameters
@@ -97,6 +98,10 @@ You can specify following data types to your `field` parameters:
 
     You can specify a range of integers, then the generator picks one in the range (uniform) randomly
 
+  * :countup
+
+    Generate countup data. Default: false
+
 * :float
 
   * :range
@@ -112,6 +117,7 @@ There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluen
 1. write tests
 2. make it slim (remove active_support, etc)
 3. outputs to a file (currently, outputs to STDOUT)
+4. speed up (evaluate fields at only starting up)
 
 ## Contributing
 
