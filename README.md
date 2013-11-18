@@ -99,6 +99,10 @@ You can specify following data types to your `field` parameters:
 
     You can specify a range of integers, then the generator picks one in the range (uniform) randomly
 
+## Relatives
+
+There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummydata to a log file. 
+
 ## Contributing
 
 1. Fork it
