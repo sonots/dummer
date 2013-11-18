@@ -38,38 +38,41 @@ module DummyLogGenerator
       @chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a # no symbols and multi-bytes for now
     end
 
-    def string(length: 8, any: nil, prev: nil, value: nil)
-      if value
-        value.to_s
-      elsif any
-        self.any(any)
-      else
-        Array.new(length){@chars[rand(@chars.size-1)]}.join
-      end
+    def string(format: nil, length: 8, any: nil, prev: nil, value: nil)
+      string = if value
+                 value.to_s
+               elsif any
+                 self.any(any)
+               else
+                 Array.new(length){@chars[rand(@chars.size-1)]}.join
+               end
+      format ? sprintf(format, string) : string
     end
 
-    def integer(range: nil, countup: false, prev: nil, value: nil)
-      if value
-        value.to_i
-      elsif range
-        self.range(range)
-      elsif countup
-        prev ||= -1
-        prev + 1
-      else
-        rand(0..2,147,483,647)
-      end
+    def integer(format: nil, range: nil, countup: false, prev: nil, value: nil)
+      integer = if value
+                  value.to_i
+                elsif range
+                  self.range(range)
+                elsif countup
+                  prev ||= -1
+                  prev.to_i + 1
+                else
+                  rand(0..2,147,483,647)
+                end
+      format ? sprintf(format, integer) : integer
     end
 
-    def float(range: nil, prev: nil, value: nil)
-      if value
-        value.to_f
-      elsif range
-        self.range(range)
-      else
-        r = rand(1..358)
-        r * Math.cos(r) # cheat
-      end
+    def float(format: nil, range: nil, prev: nil, value: nil)
+      float = if value
+                value.to_f
+              elsif range
+                self.range(range)
+              else
+                r = rand(1..358)
+                r * Math.cos(r) # cheat
+              end
+      format ? sprintf(format, float) : float
     end
 
     def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, prev: nil, value: nil)

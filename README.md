@@ -88,6 +88,10 @@ You can specify following data types to your `field` parameters:
 
 * :string
 
+  * :format
+
+    You can specify a format of string  as `%s`. 
+
   * :any
 
     You can specify an array of strings, then the generator picks one from them randomly
@@ -102,6 +106,10 @@ You can specify following data types to your `field` parameters:
 
 * :integer
 
+  * :format
+
+    You can specify a format of string  as `%03d`. 
+
   * :range
 
     You can specify a range of integers, then the generator picks one in the range (uniform) randomly
@@ -115,6 +123,10 @@ You can specify following data types to your `field` parameters:
     You can specify a fixed integer
 
 * :float
+
+  * :format
+
+    You can specify a format of string  as `%03.1f`. 
 
   * :range
 
