@@ -93,10 +93,6 @@ You can specify following data types to your `field` parameters:
 
 * :string
 
-  * :format
-
-    You can specify a format of string  as `%s`. 
-
   * :any
 
     You can specify an array of strings, then the generator picks one from them randomly
@@ -149,8 +145,6 @@ There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluen
 
 1. write tests
 2. make it slim (remove active_support, etc)
-3. outputs to a file (currently, outputs to STDOUT)
-4. speed up (evaluate fields at only starting up)
 
 ## Contributing
 
