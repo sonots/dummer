@@ -23,4 +23,6 @@ rdoc
 spec/reports
 test/tmp
 test/version_tmp
-tmp
+dummy_log_generator.pid
+dummy_log_generator.log
+

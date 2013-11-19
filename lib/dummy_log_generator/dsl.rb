@@ -25,6 +25,10 @@ module DummyLogGenerator
     def labeled(labeled)
       setting.labeled = labeled
     end
+
+    def workers(workers)
+      setting.workers = workers
+    end
   end
 end
 

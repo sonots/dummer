@@ -5,32 +5,35 @@ require 'ext/hash/except'
 
 module DummyLogGenerator
   class CLI < Thor
-    class_option :config, :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf'
+    # options for serverengine
+    class_option :pid_path, :aliases => ["-p"], :type => :string, :default => 'dummy_log_generator.pid'
     default_command :start
 
     def initialize(args = [], opts = [], config = {})
       super(args, opts, config)
+    end
 
+    desc "start", "Start a dummy_log_generator"
+    option :config,      :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf'
+    # options for serverengine
+    option :daemonize,   :aliases => ["-d"], :type => :boolean
+    option :workers,     :aliases => ["-w"], :type => :numeric
+    option :worker_type,                     :type => :string, :default => 'process'
+    def start
       @options = @options.dup # avoid frozen
       if options[:config] && File.exists?(options[:config])
         dsl = instance_eval(File.read(options[:config]), options[:config])
         @options[:setting] = dsl.setting
+        # options for serverengine
+        @options[:workers] ||= dsl.setting.workers
       end
-    end
 
-    desc "start", "Start a dummy_log_generator"
-    # options for serverengine
-    option :daemonize,   :aliases => ["-d"], :type => :boolean
-    option :workers,     :aliases => ["-w"], :type => :numeric
-    def start
       opts = @options.symbolize_keys.except(:config)
-
       se = ServerEngine.create(nil, DummyLogGenerator::Worker, opts)
       se.run
     end
 
     desc "stop", "Stops a dummy_log_generator"
-    option :pid_path,    :aliases => ["-p"], :type => :string
     def stop
       pid = File.read(@options["pid_path"]).to_i
 
@@ -43,7 +46,6 @@ module DummyLogGenerator
     end
 
     desc "graceful_stop", "Gracefully stops a dummy_log_generator"
-    option :pid_path,    :aliases => ["-p"], :type => :string
     def graceful_stop
       pid = File.read(@options["pid_path"]).to_i
 
@@ -56,7 +58,6 @@ module DummyLogGenerator
     end
 
     desc "restart", "Restarts a dummy_log_generator"
-    option :pid_path,    :aliases => ["-p"], :type => :string
     def restart
       pid = File.read(@options["pid_path"]).to_i
 
@@ -69,7 +70,6 @@ module DummyLogGenerator
     end
 
     desc "graceful_restart", "Graceful restarts a dummy_log_generator"
-    option :pid_path,    :aliases => ["-p"], :type => :string
     def graceful_restart
       pid = File.read(@options["pid_path"]).to_i
 
