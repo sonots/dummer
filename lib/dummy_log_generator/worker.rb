@@ -7,11 +7,10 @@ module DummyLogGenerator
     end
 
     def reload
-      @rate = config[:rate]
-      @formatter = config[:formatter]
-      @generator = config[:generator]
+      @generator = Generator.new(config[:setting])
+      @rate = config[:setting].rate
 
-      output = config[:output]
+      output = config[:setting].output
       if output.respond_to?(:write) and output.respond_to?(:close)
         @output = output
       else
@@ -33,7 +32,7 @@ module DummyLogGenerator
             # ToDo: what if generation is slower than I/O?
             # We may should generate data and output in parallel
             prev_data = @generator.generate(prev_data)
-            @output.write "#{@formatter.format(prev_data)}\n"
+            @output.write "#{@generator.format(prev_data)}\n"
           end
           rate_count += batch_num
           sleep 0.1

@@ -1,10 +1,12 @@
 module DummyLogGenerator
   class Generator
-    attr_accessor :fields
+    attr_reader :labeled, :delimiter, :fields
     attr_reader :rand
 
-    def initialize
-      @fields = {}
+    def initialize(setting)
+      @labeled = setting.labeled
+      @delimiter = setting.delimiter
+      @fields = setting.fields
       @rand = ::DummyLogGenerator::Random.new
     end
 
@@ -30,6 +32,14 @@ module DummyLogGenerator
       data
     end
     alias_method :gen, :generate
+
+    def format(fields)
+      if labeled
+        fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)
+      else
+        fields.values.join(delimiter)
+      end
+    end
   end
 
   class Random

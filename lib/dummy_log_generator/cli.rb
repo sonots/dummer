@@ -13,10 +13,7 @@ module DummyLogGenerator
       @options = @options.dup # avoid frozen
       if options[:config] && File.exists?(options[:config])
         dsl = instance_eval(File.read(options[:config]), options[:config])
-        @options[:generator] = dsl.generator
-        @options[:formatter] = dsl.formatter
-        @options[:rate]      = dsl.config.rate
-        @options[:output]    = dsl.config.output
+        @options[:setting] = dsl.setting
       end
     end
 
@@ -24,9 +21,6 @@ module DummyLogGenerator
     # options for serverengine
     option :daemonize,   :aliases => ["-d"], :type => :boolean
     option :workers,     :aliases => ["-w"], :type => :numeric
-    # options for dummy_log_generator
-    option :rate,        :aliases => ["-n"], :type => :numeric
-    option :output,      :aliases => ["-o"], :type => :string
     def start
       opts = @options.symbolize_keys.except(:config)
 

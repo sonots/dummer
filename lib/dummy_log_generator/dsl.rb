@@ -1,44 +1,29 @@
 module DummyLogGenerator
-  class Config
-    attr_accessor :rate, :output
-
-    def initialize
-      @rate = 500
-      @output = STDOUT
-    end
-  end
-end
-
-module DummyLogGenerator
   class Dsl
-    attr_reader :generator
-    attr_reader :formatter
-    attr_reader :config
+    attr_reader :setting
 
     def initialize
-      @generator = Generator.new
-      @formatter = Formatter.new
-      @config = Config.new
+      @setting = Setting.new
     end
 
     def rate(rate)
-      config.rate = rate
+      setting.rate = rate
     end
 
     def output(output)
-      config.output = output
+      setting.output = output
     end
 
     def field(name, opts)
-      generator.fields[name] = opts
+      setting.fields[name] = opts
     end
 
     def delimiter(delimiter)
-      formatter.delimiter = delimiter
+      setting.delimiter = delimiter
     end
 
     def labeled(labeled)
-      formatter.labeled = labeled
+      setting.labeled = labeled
     end
   end
 end
