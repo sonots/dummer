@@ -1,3 +1,12 @@
+### 0.1.0
+
+Enhancement:
+
+  * Support to output into a file (`output` option)
+  * No dependency on active_support
+  * Speed-up (Proc-based evaluation)
+  * Support parallel (`workers` option)
+
 ### 0.0.4
 
 Enhancement:
