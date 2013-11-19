@@ -73,6 +73,10 @@ Following parameters for configuration is available
 
     Define data fields to generate
 
+* workers
+
+    Specify number of processes for parallel processing. 
+
 ## Field Data Types
 
 You can specify following data types to your `field` parameters:
