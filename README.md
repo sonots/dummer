@@ -144,7 +144,6 @@ There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluen
 ## ToDO
 
 1. write tests
-2. make it slim (remove active_support, etc)
 
 ## Contributing
 

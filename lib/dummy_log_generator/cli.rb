@@ -1,6 +1,7 @@
 require 'thor'
 require 'dummy_log_generator'
-require 'active_support/core_ext'
+require 'ext/hash/keys'
+require 'ext/hash/except'
 
 module DummyLogGenerator
   class CLI < Thor
