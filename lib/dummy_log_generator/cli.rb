@@ -16,19 +16,21 @@ module DummyLogGenerator
         @options[:generator] = dsl.generator
         @options[:formatter] = dsl.formatter
         @options[:rate]      = dsl.config.rate
+        @options[:output]    = dsl.config.output
       end
     end
 
     desc "start", "Start a dummy_log_generator"
-    option :require,     :aliases => ["-r"], :type => :string
+    # options for serverengine
     option :daemonize,   :aliases => ["-d"], :type => :boolean
-    option :module_name, :aliases => ["-m"], :type => :string, :default => 'DummyLogGenerator::Worker'
+    option :workers,     :aliases => ["-w"], :type => :numeric
     # options for dummy_log_generator
-    option :rate,        :aliases => ["-i"], :type => :numeric
+    option :rate,        :aliases => ["-n"], :type => :numeric
+    option :output,      :aliases => ["-o"], :type => :string
     def start
-      opts = @options.symbolize_keys.except(:require, :config, :module_name)
+      opts = @options.symbolize_keys.except(:config)
 
-      se = ServerEngine.create(nil, @options["module_name"].constantize, opts)
+      se = ServerEngine.create(nil, DummyLogGenerator::Worker, opts)
       se.run
     end
 

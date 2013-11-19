@@ -27,6 +27,7 @@ Sample configuration is as follows:
 ```ruby
 # dummy_log_generator.conf
 configure 'sample' do
+  output dummy.log
   rate 500
   delimiter "\t"
   labeled true
@@ -40,7 +41,7 @@ configure 'sample' do
 end 
 ```
 
-Running dummy_log_generator outputs like
+Running dummy_log_generator outputs to `dummy.log` like
 
 ```
 id:422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
@@ -51,6 +52,10 @@ id:424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata
 ## Configuration Parameters
 
 Following parameters for configuration is available
+
+* output
+
+    Specify a filename to output, or IO object (STDOUT, STDERR)
 
 * rate
 

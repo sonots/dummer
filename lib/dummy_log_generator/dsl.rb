@@ -1,9 +1,10 @@
 module DummyLogGenerator
   class Config
-    attr_accessor :rate
+    attr_accessor :rate, :output
 
-    def initiaize
+    def initialize
       @rate = 500
+      @output = STDOUT
     end
   end
 end
@@ -22,6 +23,10 @@ module DummyLogGenerator
 
     def rate(rate)
       config.rate = rate
+    end
+
+    def output(output)
+      config.output = output
     end
 
     def field(name, opts)
