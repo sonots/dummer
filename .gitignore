@@ -25,4 +25,4 @@ test/tmp
 test/version_tmp
 dummy_log_generator.pid
 dummy_log_generator.log
-
+dummy.log
