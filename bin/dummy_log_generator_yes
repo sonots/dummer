@@ -1,22 +1,28 @@
 #!/usr/bin/env ruby
 require 'thor'
-require 'parallel'
 
 module DummyLogGeneratorYes
   class CLI < Thor
     default_command :start
     desc "start", "Start a dummy_log_generator"
     option :duration,    :aliases => ["-d"], :type => :numeric, :default => 1
+    option :concurrency, :aliases => ["-c"], :type => :numeric, :default => 1
     option :filename,    :aliases => ["-f"], :type => :string, :default => 'dummy.log'
     option :message,     :aliases => ["-m"], :type => :string,
       :default => "time:2013-11-20 23:39:42 +0900\tlevel:ERROR\tmethod:POST\turi:/api/v1/people\treqtime:3.1983877060667103\n"
     def start
+      concurrency = @options[:concurrency]
       filename    = @options[:filename]
       message     = @options[:message]
       duration    = Time.now + @options[:duration]
-      pid = spawn("yes #{message}", :out => filename)
-      while Time.now < duration do; sleep 0.1; end
-      Process.kill(:KILL, pid)
+      pids = []
+      concurrency.times do |i|
+        pids[i] = spawn("yes #{message}", :out => [filename, (File::WRONLY | File::APPEND | File::CREAT)])
+      end
+      while Time.now < duration do; sleep 0.01; end
+      concurrency.times do |i|
+        Process.kill(:TERM, pids[i])
+      end
     end
   end
 end
