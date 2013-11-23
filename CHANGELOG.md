@@ -1,3 +1,12 @@
+### 0.2.0
+
+Enhancement:
+
+  * Add `message` option to write only a specific message
+  * Add `input` option to write messges by reading lines of an input file in roration
+  * Add `dummy_log_generator_simple` command
+  * Add `dummy_log_generator_yes` command
+
 ### 0.1.0
 
 Enhancement:
