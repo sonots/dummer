@@ -1,6 +1,12 @@
 # DummyLogGenerator
 
-Generates dummy log data for Fluentd benchmark 
+Generates dummy log data for Fluentd benchmark. 
+
+This gem includes three executable commands
+
+1. dummy\_log\_generator
+2. dummy\_log\_generator\_simple
+3. dummy\_log\_generator\_yes
 
 ## Installation
 
@@ -19,10 +25,20 @@ Or install it yourself as:
 Run as
 
     $ dummy_log_generator -c dummy_data_generator.conf
+    $ dummy_log_generator_simple [options]
+    $ dummy_log_generator_yes [options]
 
-## Usage
+## dummy\_log\_generator
 
-Sample configuration is as follows:
+`dummy_log_generator` allows you to
+
+1. specify a rate of generating messages per second, 
+2. determine a log format, and
+3. generate logs randomly
+
+### Usage
+
+Create a configuration file. A sample configuration is as follows:
 
 ```ruby
 # dummy_log_generator.conf
@@ -41,7 +57,13 @@ configure 'sample' do
 end 
 ```
 
-Running dummy_log_generator outputs to `dummy.log` like
+Run as:
+
+```
+$ dummy_log_genrator -c dummy_log_generator.conf
+```
+
+Outputs in the `dummy.log` (specified by `output` parameter) file like: 
 
 ```
 id:422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
@@ -49,9 +71,9 @@ id:423  time:[2013-11-19 02:34:58]  level:DEBUG method:GET  uri:/api/v1/people  
 id:424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata  reqtime:2.930590441869852   foobar:XEZ5bQsh
 ```
 
-## Configuration Parameters
+### Configuration Parameters
 
-Following parameters for configuration is available
+Following parameters in the configuration file are available:
 
 * output
 
@@ -77,7 +99,7 @@ Following parameters for configuration is available
 
     Specify number of processes for parallel processing. 
 
-## Field Data Types
+### Field Data Types
 
 You can specify following data types to your `field` parameters:
 
@@ -140,6 +162,64 @@ You can specify following data types to your `field` parameters:
   * :value
 
     You can specify a fixed float number
+
+## dummy\_log\_generator\_simple
+
+I created a simple version of `dummy_log_generator` since it can not achieve the maximum system I/O throughputs because of its rich features.
+This simple version, `dummy_log_generator_simple` can achieve the system I/O limit. 
+
+### Usage
+
+```
+$ dummy_log_genrator_simple [options]
+```
+
+### Options
+
+```
+Usage:
+  dummy_log_generator_simple
+
+Options:
+      [--sync]             # Use fsync(2) or not
+  -s, [--second=N]         # Duration of running in second
+                           # Default: 1
+  -p, [--parallel=N]       # Number of processes to run in parallel
+                           # Default: 1
+  -o, [--output=OUTPUT]    # Output file
+                           # Default: dummy.log
+  -m, [--message=MESSAGE]  # Output message
+                           # Default: time:2013-11-20 23:39:42 +0900  level:ERROR method:POST uri:/api/v1/people  reqtime:3.1983877060667103
+```
+
+## dummy\_log\_generator\_yes
+
+I created a wrapped version of `yes` command, `dummy_log_generator_yes`, to confrim that `dummy_log_generator_simple` achieves the maximum system I/O throughputs. 
+Although this `yes` version is not necessary anymore since I verified that `dummy_log_generator_simple` achieves the system I/O limit, 
+I will keep this command so that users can do verification experiments with it. 
+
+### Usage
+
+```
+$ dummy_log_genrator_yes [options]
+```
+
+### Options
+
+```
+Usage:
+  dummy_log_generator_yes
+
+Options:
+  -s, [--second=N]         # Duration of running in second
+                           # Default: 1
+  -p, [--parallel=N]       # Number of processes to run in parallel
+                           # Default: 1
+  -o, [--output=OUTPUT]    # Output file
+                           # Default: dummy.log
+  -m, [--message=MESSAGE]  # Output message
+                           # Default: time:2013-11-20 23:39:42 +0900  level:ERROR method:POST uri:/api/v1/people  reqtime:3.1983877060667103
+```
 
 ## Relatives
 

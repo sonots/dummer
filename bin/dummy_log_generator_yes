@@ -5,25 +5,30 @@ module DummyLogGeneratorYes
   class CLI < Thor
     default_command :start
     desc "start", "Start a dummy_log_generator"
-    option :duration,    :aliases => ["-d"], :type => :numeric, :default => 1
-    option :concurrency, :aliases => ["-c"], :type => :numeric, :default => 1
-    option :filename,    :aliases => ["-f"], :type => :string, :default => 'dummy.log'
-    option :message,     :aliases => ["-m"], :type => :string,
+    option :second,   :aliases => ["-s"], :type => :numeric, :default => 1, :desc => 'Duration of running in second'
+    option :parallel, :aliases => ["-p"], :type => :numeric, :default => 1, :desc => 'Number of processes to run in parallel'
+    option :output,   :aliases => ["-o"], :type => :string,  :default => 'dummy.log', :desc => 'Output file'
+    option :message,  :aliases => ["-m"], :type => :string,  :desc => 'Output message',
       :default => "time:2013-11-20 23:39:42 +0900\tlevel:ERROR\tmethod:POST\turi:/api/v1/people\treqtime:3.1983877060667103\n"
     def start
-      concurrency = @options[:concurrency]
-      filename    = @options[:filename]
-      message     = @options[:message]
-      duration    = Time.now + @options[:duration]
-      pids = []
-      concurrency.times do |i|
-        pids[i] = spawn("yes #{message}", :out => [filename, (File::WRONLY | File::APPEND | File::CREAT)])
-      end
-      while Time.now < duration do; sleep 0.01; end
-      concurrency.times do |i|
-        Process.kill(:TERM, pids[i])
-      end
+      parallel = @options[:parallel]
+      output   = @options[:output]
+      message  = "#{@options[:message].chomp}\n"
+      wait_and_kill {
+        parallel.times.map do
+          spawn("yes #{message}", :out => [output, (File::WRONLY | File::APPEND | File::CREAT)])
+        end
+      }
     end
+
+    no_commands {
+      def wait_and_kill(&block)
+        second = Time.now + @options[:second]
+        pids = yield # fork
+        while Time.now < second do; sleep 0.01; end
+        pids.each {|pid| Process.kill(:TERM, pid) }
+      end
+    }
   end
 end
 

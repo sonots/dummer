@@ -5,34 +5,76 @@ module DummyLogGeneratorSimple
   class CLI < Thor
     default_command :start
     desc "start", "Start a dummy_log_generator"
-    option :sync,        :aliases => ["-s"], :type => :boolean
-    option :duration,    :aliases => ["-d"], :type => :numeric, :default => 1
-    option :concurrency, :aliases => ["-c"], :type => :numeric, :default => 1
-    option :filename,    :aliases => ["-f"], :type => :string, :default => 'dummy.log'
-    option :message,     :aliases => ["-m"], :type => :string,
+    option :sync,                         :type => :boolean, :desc => 'Use fsync(2) or not'
+    option :second,   :aliases => ["-s"], :type => :numeric, :default => 1, :desc => 'Duration of running in second'
+    option :parallel, :aliases => ["-p"], :type => :numeric, :default => 1, :desc => 'Number of processes to run in parallel'
+    option :output,   :aliases => ["-o"], :type => :string,  :default => 'dummy.log', :desc => 'Output file'
+    option :input,    :aliases => ["-i"], :type => :string,  :desc => 'Input file (Output contents in the file in rotation)'
+    option :message,  :aliases => ["-m"], :type => :string,  :desc => 'Output message',
       :default => "time:2013-11-20 23:39:42 +0900\tlevel:ERROR\tmethod:POST\turi:/api/v1/people\treqtime:3.1983877060667103\n"
     def start
-      sync        = @options[:sync]
-      concurrency = @options[:concurrency]
-      filename    = @options[:filename]
-      message     = @options[:message]
-      duration    = Time.now + @options[:duration]
-      pids = []
-      open(filename, (File::WRONLY | File::APPEND | File::CREAT)) do |output|
-        output.sync = true if sync
-        concurrency.times do |i|
-          pids[i] = Process.fork do
-            while true do
-              output.write message
-            end
-          end
-        end
-        while Time.now < duration do; sleep 0.01; end
-        concurrency.times do |i|
-          Process.kill(:TERM, pids[i])
+      sync     = @options[:sync]
+      parallel = @options[:parallel]
+      output   = @options[:output]
+      message  = "#{@options[:message].chomp}\n"
+      messages = nil
+      if input = @options[:input] and (messages = readlines(input)).nil?
+        STDERR.puts "Input file `#{input}` does not exist or is not readable."
+        exit 1
+      end
+
+      open(output, (File::WRONLY | File::APPEND | File::CREAT)) do |out_file|
+        out_file.sync = true if sync
+        if messages
+          wait_and_kill { write_messages(out_file, messages, parallel) }
+        else
+          wait_and_kill { write_message(out_file, message, parallel) }
         end
       end
     end
+
+    no_commands {
+      def wait_and_kill(&block)
+        second = Time.now + @options[:second]
+        pids = yield # fork
+        while Time.now < second do; sleep 0.01; end
+        pids.each {|pid| Process.kill(:TERM, pid) }
+      end
+
+      def write_message(out_file, message, parallel = 1)
+        parallel.times.map do
+          Process.fork do
+            while true do
+              out_file.write message
+            end
+          end
+        end
+      end
+
+      def write_messages(out_file, messages, parallel = 1)
+        size = messages.size
+        parallel.times.map do
+          Process.fork do
+            idx = -1 # create this in child-process not to be shared
+            while true do
+              idx = (idx + 1) % size
+              out_file.write messages[idx]
+            end
+          end
+        end
+      end
+
+      def readlines(input)
+        messages = nil
+        begin
+          open(input) do |in_file|
+            messages = in_file.readlines
+          end
+        rescue Errno::ENOENT
+        end
+        messages
+      end
+    }
   end
 end
 
