@@ -1,44 +1,80 @@
 module DummyLogGenerator
   class Generator
     def initialize(setting)
-      prepare_format_proc(setting.labeled, setting.delimiter)
-      prepare_field_procs(setting.fields)
+      @message_proc =
+        if input = setting.input
+          prepare_message_proc_for_input(input)
+        elsif message = setting.message
+          prepare_message_proc_for_message(message)
+        else
+          fields, labeled, delimiter = setting.fields, setting.labeled, setting.delimiter
+          prepare_message_proc_for_fields(fields, labeled, delimiter)
+        end
+    end
+
+    def prepare_message_proc_for_input(input)
+      messages = nil
+      begin
+        open(input) do |in_file|
+          messages = in_file.readlines
+        end
+      rescue Errno::ENOENT
+        raise ConfigError.new("Input file `#{input}` is not readable")
+      end
+      idx = -1
+      size = messages.size
+      Proc.new {
+        idx = (idx + 1) % size
+        messages[idx]
+      }
+    end
+
+    def prepare_message_proc_for_message(message)
+      message = "#{message.chomp}\n"
+      Proc.new { message }
+    end
+
+    def prepare_message_proc_for_fields(fields, labeled, delimiter)
+      format_proc = prepare_format_proc(labeled, delimiter)
+      field_procs = prepare_field_procs(fields)
+
+      prev_data = {}
+      Proc.new {
+        data = {}
+        field_procs.each do |key, proc|
+          prev = prev_data[key] || -1
+          data[key] = proc.call(prev)
+        end
+        prev_data = data
+        format_proc.call(data)
+      }
     end
 
     def prepare_format_proc(labeled, delimiter)
-      @format_proc =
-        if labeled
-          Proc.new {|fields| fields.map {|key, val| "#{key}:#{val}" }.join(delimiter) }
-        else
-          Proc.new {|fields| fields.values.join(delimiter) }
-        end
+      if labeled
+        Proc.new {|fields| "#{fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)}\n" }
+      else
+        Proc.new {|fields| "#{fields.values.join(delimiter)}\n" }
+      end
     end
 
     def prepare_field_procs(fields)
       rand = ::DummyLogGenerator::Random.new
-      @field_procs = {}
+      field_procs = {}
       fields.each do |key, opts|
         opts = opts.dup
         type = opts.delete(:type)
         if rand.respond_to?(type)
-          @field_procs[key] = rand.send(type, opts)
+          field_procs[key] = rand.send(type, opts)
         else
           raise ConfigError.new(type)
         end
       end
+      field_procs
     end
 
-    def generate(prev_data = {})
-      data = {}
-      @field_procs.each do |key, proc|
-        prev = prev_data[key] || -1
-        data[key] = proc.call(prev)
-      end
-      data
-    end
-
-    def format(fields)
-      @format_proc.call(fields)
+    def generate
+      @message_proc.call
     end
   end
 

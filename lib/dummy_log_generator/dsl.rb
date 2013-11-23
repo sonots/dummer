@@ -6,28 +6,16 @@ module DummyLogGenerator
       @setting = Setting.new
     end
 
-    def rate(rate)
-      setting.rate = rate
-    end
-
-    def output(output)
-      setting.output = output
+    def method_missing(name, *args)
+      if @setting.respond_to?("#{name}=")
+        @setting.__send__("#{name}=", *args)
+      else
+        raise ConfigError.new("Config parameter `#{name}` does not exist")
+      end
     end
 
     def field(name, opts)
       setting.fields[name] = opts
-    end
-
-    def delimiter(delimiter)
-      setting.delimiter = delimiter
-    end
-
-    def labeled(labeled)
-      setting.labeled = labeled
-    end
-
-    def workers(workers)
-      setting.workers = workers
     end
   end
 end

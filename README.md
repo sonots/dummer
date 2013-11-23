@@ -57,13 +57,13 @@ configure 'sample' do
 end 
 ```
 
-Run as:
+Running
 
 ```
 $ dummy_log_genrator -c dummy_log_generator.conf
 ```
 
-Outputs in the `dummy.log` (specified by `output` parameter) file like: 
+Outputs to the `dummy.log` (specified by `output` parameter) file like: 
 
 ```
 id:422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
@@ -83,6 +83,10 @@ Following parameters in the configuration file are available:
 
     Specify how many messages to generate per second. Default: 500 msgs / sec
 
+* workers
+
+    Specify number of processes for parallel processing. 
+
 * delimiter
 
     Specify the delimiter between each field. Default: "\t" (Tab)
@@ -95,9 +99,13 @@ Following parameters in the configuration file are available:
 
     Define data fields to generate
 
-* workers
+* message
 
-    Specify number of processes for parallel processing. 
+    Use this if you want to write only a specific message. `field` is ignored. 
+
+* input
+
+    Use this if you want to write messages by reading lines of an input file in rotation. `field` and `message` are ignored. 
 
 ### Field Data Types
 
@@ -166,7 +174,7 @@ You can specify following data types to your `field` parameters:
 ## dummy\_log\_generator\_simple
 
 I created a simple version of `dummy_log_generator` since it can not achieve the maximum system I/O throughputs because of its rich features.
-This simple version, `dummy_log_generator_simple` can achieve the system I/O limit. 
+This simple version, `dummy_log_generator_simple` could  achieve the system I/O limit in my environment. 
 
 ### Usage
 
@@ -188,15 +196,15 @@ Options:
                            # Default: 1
   -o, [--output=OUTPUT]    # Output file
                            # Default: dummy.log
+  -i, [--input=INPUT]      # Input file (Output messages by reading lines of the file in rotation)
   -m, [--message=MESSAGE]  # Output message
-                           # Default: time:2013-11-20 23:39:42 +0900  level:ERROR method:POST uri:/api/v1/people  reqtime:3.1983877060667103
+                           # Default: time:2013-11-20 23:39:42 +0900    level:ERROR     method:POST     uri:/api/v1/people      reqtime:3.1983877060667103
 ```
 
 ## dummy\_log\_generator\_yes
 
 I created a wrapped version of `yes` command, `dummy_log_generator_yes`, to confrim that `dummy_log_generator_simple` achieves the maximum system I/O throughputs. 
-Although this `yes` version is not necessary anymore since I verified that `dummy_log_generator_simple` achieves the system I/O limit, 
-I will keep this command so that users can do verification experiments with it. 
+I do not use `dummy_log_generator_yes` command anymore because I verified that `dummy_log_generator_simple` achieves the I/O limit, but I will keep this command so that users can do verification experiments with it. 
 
 ### Usage
 
