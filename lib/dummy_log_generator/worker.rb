@@ -28,7 +28,7 @@ module DummyLogGenerator
 
         while !@stop && rate_count < @rate && Time.now.to_i == current_time
           batch_num.times do
-            @output.syswrite @generator.generate
+            @output.write @generator.generate
           end
           rate_count += batch_num
           sleep 0.1

@@ -45,7 +45,7 @@ module DummyLogGeneratorSimple
         parallel.times.map do
           Process.fork do
             while true do
-              out_file.syswrite message
+              out_file.write message
             end
           end
         end
@@ -58,7 +58,7 @@ module DummyLogGeneratorSimple
             idx = -1 # create this in child-process not to be shared
             while true do
               idx = (idx + 1) % size
-              out_file.syswrite messages[idx]
+              out_file.write messages[idx]
             end
           end
         end
