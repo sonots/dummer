@@ -2,6 +2,8 @@ require 'serverengine'
 
 module DummyLogGenerator
   module Worker
+    BIN_NUM = 10
+
     def initialize
       reload
     end
@@ -19,23 +21,19 @@ module DummyLogGenerator
       end
     end
 
-    # thanks! ref. https://github.com/tagomoris/fluent-plugin-dummydata-producer/blob/a550fd4424f71cd9227e138c3c89f600ba40a0d5/lib/fluent/plugin/in_dummydata_producer.rb#L63
     def run
-      batch_num = (@rate / 9).to_i + 1
+      batch_num    = (@rate / BIN_NUM).to_i
+      residual_num = (@rate % BIN_NUM)
       while !@stop
         current_time = Time.now.to_i
-        rate_count = 0
-
-        while !@stop && rate_count < @rate && Time.now.to_i == current_time
-          batch_num.times do
-            @output.write @generator.generate
-          end
-          rate_count += batch_num
-          sleep 0.1
+        BIN_NUM.times do
+          break unless (!@stop && Time.now.to_i <= current_time)
+          wait(0.1) { write(batch_num) }
         end
+        write(residual_num)
         # wait for next second
-        while !@stop && Time.now.to_i == current_time
-          sleep 0.04
+        while !@stop && Time.now.to_i <= current_time
+          sleep 0.01
         end
       end
     ensure
@@ -44,6 +42,19 @@ module DummyLogGenerator
 
     def stop
       @stop = true
+    end
+
+private
+
+    def write(num)
+      num.times { @output.write @generator.generate }
+    end
+
+    def wait(time)
+      start_time = Time.now
+      yield
+      sleep_time = time - (Time.now - start_time)
+      sleep sleep_time if sleep_time > 0
     end
   end
 end
