@@ -8,7 +8,7 @@ module DummyLogGenerator
 
     def reload
       @generator = Generator.new(config[:setting])
-      @rate = config[:setting].rate
+      @rate = config[:rate]
 
       output = config[:setting].output
       if output.respond_to?(:write) and output.respond_to?(:close)

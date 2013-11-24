@@ -15,6 +15,7 @@ module DummyLogGenerator
 
     desc "start", "Start a dummy_log_generator"
     option :config,      :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf'
+    option :rate,        :aliases => ["-r"], :type => :numeric
     # options for serverengine
     option :daemonize,   :aliases => ["-d"], :type => :boolean
     option :workers,     :aliases => ["-w"], :type => :numeric
@@ -24,6 +25,7 @@ module DummyLogGenerator
       if options[:config] && File.exists?(options[:config])
         dsl = instance_eval(File.read(options[:config]), options[:config])
         @options[:setting] = dsl.setting
+        @options[:rate]    ||= dsl.setting.rate
         # options for serverengine
         @options[:workers] ||= dsl.setting.workers
       end
