@@ -2,13 +2,14 @@ module DummyLogGenerator
   class Generator
     def initialize(setting)
       @message_proc =
-        if input = setting.input
-          prepare_message_proc_for_input(input)
-        elsif message = setting.message
-          prepare_message_proc_for_message(message)
-        else
-          fields, labeled, delimiter = setting.fields, setting.labeled, setting.delimiter
+        if fields = setting.fields
+          labeled, delimiter = setting.labeled, setting.delimiter
           prepare_message_proc_for_fields(fields, labeled, delimiter)
+        elsif input = setting.input
+          prepare_message_proc_for_input(input)
+        else
+          message = setting.message
+          prepare_message_proc_for_message(message)
         end
     end
 

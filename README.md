@@ -47,8 +47,8 @@ configure 'sample' do
   rate 500
   delimiter "\t"
   labeled true
-  field :id, type: :integer, countup: true
-  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: true
+  field :id, type: :integer, countup: true, format: "%04d"
+  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: false
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
   field :method, type: :string, any: %w[GET POST PUT]
   field :uri, type: :string, any: %w[/api/v1/people /api/v1/textdata /api/v1/messages]
@@ -97,15 +97,15 @@ Following parameters in the configuration file are available:
 
 * field
 
-    Define data fields to generate
-
-* message
-
-    Use this if you want to write only a specific message. `field` is ignored. 
+    Define data fields to generate. `message` and `field` are ignored. 
 
 * input
 
-    Use this if you want to write messages by reading lines of an input file in rotation. `field` and `message` are ignored. 
+    Use this if you want to write messages by reading lines of an input file in rotation. `field` is ignored.
+
+* message
+
+    Use this if you want to write only a specific message. 
 
 ### Field Data Types
 

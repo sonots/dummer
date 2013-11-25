@@ -7,9 +7,9 @@ module DummyLogGenerator
       @output = STDOUT
       @labeled = true
       @delimiter = "\t"
-      @fields = {}
+      @fields = nil
       @workers = 1
-      @message = nil
+      @message = "time:2013-11-25 00:23:52 +0900\tlevel:ERROR\tmethod:POST\turi:/api/v1/people\treqtime:3.1983877060667103\n"
       @input = nil
     end
   end
