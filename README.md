@@ -47,8 +47,8 @@ configure 'sample' do
   rate 500
   delimiter "\t"
   labeled true
-  field :id, type: :integer, countup: true
-  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: true
+  field :id, type: :integer, countup: true, format: "%04d"
+  field :time, type: :datetime, format: "[%Y-%m-%d %H:%M:%S]", random: false
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
   field :method, type: :string, any: %w[GET POST PUT]
   field :uri, type: :string, any: %w[/api/v1/people /api/v1/textdata /api/v1/messages]
@@ -66,9 +66,9 @@ $ dummy_log_genrator -c dummy_log_generator.conf
 Outputs to the `dummy.log` (specified by `output` parameter) file like: 
 
 ```
-id:422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
-id:423  time:[2013-11-19 02:34:58]  level:DEBUG method:GET  uri:/api/v1/people    reqtime:0.49912949125272277 foobar:DcOYrONH
-id:424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata  reqtime:2.930590441869852   foobar:XEZ5bQsh
+id:0422  time:[2013-11-19 02:34:58]  level:INFO  method:POST uri:/api/v1/textdata  reqtime:3.9726677258569842  foobar:LFK6XV1N
+id:0423  time:[2013-11-19 02:34:58]  level:DEBUG method:GET  uri:/api/v1/people    reqtime:0.49912949125272277 foobar:DcOYrONH
+id:0424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata  reqtime:2.930590441869852   foobar:XEZ5bQsh
 ```
 
 ### Configuration Parameters
@@ -97,15 +97,15 @@ Following parameters in the configuration file are available:
 
 * field
 
-    Define data fields to generate
-
-* message
-
-    Use this if you want to write only a specific message. `field` is ignored. 
+    Define data fields to generate. `message` and `field` are ignored. 
 
 * input
 
-    Use this if you want to write messages by reading lines of an input file in rotation. `field` and `message` are ignored. 
+    Use this if you want to write messages by reading lines of an input file in rotation. `field` is ignored.
+
+* message
+
+    Use this if you want to write only a specific message. 
 
 ### Field Data Types
 

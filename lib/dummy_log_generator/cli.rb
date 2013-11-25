@@ -22,13 +22,16 @@ module DummyLogGenerator
     option :worker_type,                     :type => :string, :default => 'process'
     def start
       @options = @options.dup # avoid frozen
-      if options[:config] && File.exists?(options[:config])
-        dsl = instance_eval(File.read(options[:config]), options[:config])
-        @options[:setting] = dsl.setting
-        @options[:rate]    ||= dsl.setting.rate
-        # options for serverengine
-        @options[:workers] ||= dsl.setting.workers
-      end
+      dsl =
+        if options[:config] && File.exists?(options[:config])
+          instance_eval(File.read(options[:config]), options[:config])
+        else
+          DummyLogGenerator::Dsl.new
+        end
+      @options[:setting] = dsl.setting
+      @options[:rate]    ||= dsl.setting.rate
+      # options for serverengine
+      @options[:workers] ||= dsl.setting.workers
 
       opts = @options.symbolize_keys.except(:config)
       se = ServerEngine.create(nil, DummyLogGenerator::Worker, opts)

@@ -1,0 +1,10 @@
+id:0	time:2013-11-26 02:45:33 +0900	level:WARN	method:GET	uri:/api/v1/people	reqtime:2.3955637407914354	foobar:3xwwVG3T
+id:1	time:2013-11-26 02:45:33 +0900	level:INFO	method:POST	uri:/api/v1/people	reqtime:4.954494736221596	foobar:kRP5SiBW
+id:2	time:2013-11-26 02:45:33 +0900	level:DEBUG	method:POST	uri:/api/v1/people	reqtime:1.719978260834408	foobar:0EFaal3L
+id:3	time:2013-11-26 02:45:33 +0900	level:DEBUG	method:POST	uri:/api/v1/people	reqtime:3.2873443102110755	foobar:sGMFl2xs
+id:4	time:2013-11-26 02:45:33 +0900	level:INFO	method:POST	uri:/api/v1/textdata	reqtime:1.8776513072710397	foobar:dTlmjln3
+id:5	time:2013-11-26 02:45:33 +0900	level:INFO	method:POST	uri:/api/v1/people	reqtime:2.7644992372264974	foobar:jLL6zTdt
+id:6	time:2013-11-26 02:45:33 +0900	level:WARN	method:POST	uri:/api/v1/people	reqtime:4.609761906663468	foobar:k2hegeOG
+id:7	time:2013-11-26 02:45:33 +0900	level:DEBUG	method:POST	uri:/api/v1/people	reqtime:1.7312535151311619	foobar:JpwUkYKs
+id:8	time:2013-11-26 02:45:33 +0900	level:WARN	method:POST	uri:/api/v1/people	reqtime:2.2088570489185217	foobar:eOSmfjCb
+id:9	time:2013-11-26 02:45:33 +0900	level:WARN	method:POST	uri:/api/v1/people	reqtime:2.6351789530831637	foobar:cFBI2Gsm

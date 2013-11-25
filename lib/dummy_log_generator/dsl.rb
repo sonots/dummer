@@ -15,6 +15,7 @@ module DummyLogGenerator
     end
 
     def field(name, opts)
+      setting.fields ||= {}
       setting.fields[name] = opts
     end
   end
