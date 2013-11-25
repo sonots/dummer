@@ -1,3 +1,9 @@
+### 0.2.1
+
+Change:
+
+  * Change the default behavior to use the default `message` rather than `field`.
+
 ### 0.2.0
 
 Enhancement:
