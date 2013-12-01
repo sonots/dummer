@@ -43,7 +43,7 @@ Create a configuration file. A sample configuration is as follows:
 ```ruby
 # dummy_log_generator.conf
 configure 'sample' do
-  output dummy.log
+  output "dummy.log"
   rate 500
   delimiter "\t"
   labeled true
@@ -97,11 +97,11 @@ Following parameters in the configuration file are available:
 
 * field
 
-    Define data fields to generate. `message` and `field` are ignored. 
+    Define data fields to generate. `message` and `input` options are ignored. 
 
 * input
 
-    Use this if you want to write messages by reading lines of an input file in rotation. `field` is ignored.
+    Use this if you want to write messages by reading lines of an input file in rotation. `message` is ignored.
 
 * message
 
@@ -189,7 +189,7 @@ Usage:
   dummy_log_generator_simple
 
 Options:
-      [--sync]             # Use fsync(2) or not
+      [--sync]             # Set `IO#sync=true`
   -s, [--second=N]         # Duration of running in second
                            # Default: 1
   -p, [--parallel=N]       # Number of processes to run in parallel
