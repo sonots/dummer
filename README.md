@@ -233,6 +233,10 @@ Options:
 
 There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummy data to a log file, and I wanted a standalone tool.
 
+## Related Articles
+
+* [Fluentd のベンチマークテストに使える dummy_log_generator](http://qiita.com/sonots/items/750da77a18e62852a02f)
+
 ## ToDO
 
 1. write tests
