@@ -1,3 +1,9 @@
+### 0.2.2 (2014/01/15)
+
+Enhancement:
+
+  * Add CLI options to `dummy_log_generator` command
+
 ### 0.2.1
 
 Change:
