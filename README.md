@@ -71,6 +71,27 @@ id:0423  time:[2013-11-19 02:34:58]  level:DEBUG method:GET  uri:/api/v1/people 
 id:0424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdata  reqtime:2.930590441869852   foobar:XEZ5bQsh
 ```
 
+### CLI Options
+
+```
+$ dummy_log_generator help start
+Usage:
+  dummy_log_generator start
+
+Options:
+  -c, [--config=CONFIG]            # Config file
+                                   # Default: dummy_log_generator.conf
+  -r, [--rate=N]                   # Number of generating messages per second
+  -o, [--output=OUTPUT]            # Output file
+  -m, [--message=MESSAGE]          # Output message
+  -d, [--daemonize]                # Daemonize. Stop with `dummy_log_generator stop`
+  -w, [--workers=N]                # Number of parallels
+      [--worker-type=WORKER_TYPE]
+                                   # Default: process
+  -p, [--pid-path=PID_PATH]
+                                   # Default: dummy_log_generator.pid
+```
+
 ### Configuration Parameters
 
 Following parameters in the configuration file are available:

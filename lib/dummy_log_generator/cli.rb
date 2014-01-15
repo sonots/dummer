@@ -14,12 +14,14 @@ module DummyLogGenerator
     end
 
     desc "start", "Start a dummy_log_generator"
-    option :config,      :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf'
-    option :rate,        :aliases => ["-r"], :type => :numeric
+    option :config,    :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf', :desc => 'Config file'
+    option :rate,      :aliases => ["-r"], :type => :numeric, :desc => 'Number of generating messages per second'
+    option :output,    :aliases => ["-o"], :type => :string, :desc => 'Output file'
+    option :message,   :aliases => ["-m"], :type => :string, :desc => 'Output message'
     # options for serverengine
-    option :daemonize,   :aliases => ["-d"], :type => :boolean
-    option :workers,     :aliases => ["-w"], :type => :numeric
-    option :worker_type,                     :type => :string, :default => 'process'
+    option :daemonize, :aliases => ["-d"], :type => :boolean, :desc => 'Daemonize. Stop with `dummy_log_generator stop`'
+    option :workers,   :aliases => ["-w"], :type => :numeric, :desc => 'Number of parallels'
+    option :worker_type,                   :type => :string, :default => 'process'
     def start
       @options = @options.dup # avoid frozen
       dsl =
@@ -29,7 +31,9 @@ module DummyLogGenerator
           DummyLogGenerator::Dsl.new
         end
       @options[:setting] = dsl.setting
-      @options[:rate]    ||= dsl.setting.rate
+      dsl.setting.rate = options[:rate] if options[:rate]
+      dsl.setting.output = options[:output] if options[:output]
+      dsl.setting.message = options[:message] if options[:message]
       # options for serverengine
       @options[:workers] ||= dsl.setting.workers
 
