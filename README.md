@@ -261,6 +261,7 @@ There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluen
 ## ToDO
 
 1. write tests
+2. Add an option to send data to fluentd directly
 
 ## Contributing
 
