@@ -146,7 +146,7 @@ module DummyLogGenerator
 
     def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, value: nil)
       if value
-        Proc.new { value.sprintf(format) }
+        Proc.new { value.strftime(format) }
       elsif random
         Proc.new {
           y = rand(1970..2037);
@@ -156,10 +156,10 @@ module DummyLogGenerator
           min = rand(0..59);
           s = rand(0..59);
           usec = rand(0..999999);
-          Time.local(y, m, d, h, min, s, usec)
+          Time.local(y, m, d, h, min, s, usec).strftime(format)
         }
       else
-        Proc.new { Time.now }
+        Proc.new { Time.now.strftime(format) }
       end
     end
 
