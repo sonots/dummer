@@ -1,3 +1,9 @@
+### 0.2.3 (2014/01/22)
+
+Fixes:
+
+  * Fix datetime type format (thanks xcezx)
+
 ### 0.2.2 (2014/01/15)
 
 Enhancement:
