@@ -1,3 +1,9 @@
+### 0.3.0 (2014/01/25)
+
+Big Changes:
+
+  * Rename application name from `dummy_log_generator` to `dummer`. `dummy_log_generator` was too long.
+
 ### 0.2.3 (2014/01/22)
 
 Fixes:
