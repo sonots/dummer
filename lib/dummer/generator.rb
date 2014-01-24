@@ -3,79 +3,91 @@ module Dummer
     def initialize(setting)
       @message_proc =
         if fields = setting.fields
-          labeled, delimiter = setting.labeled, setting.delimiter
-          prepare_message_proc_for_fields(fields, labeled, delimiter)
+          Field.message_proc(fields, setting.labeled, setting.delimiter)
         elsif input = setting.input
-          prepare_message_proc_for_input(input)
+          Input.message_proc(input)
         else
-          message = setting.message
-          prepare_message_proc_for_message(message)
+          Message.message_proc(setting.message)
         end
-    end
-
-    def prepare_message_proc_for_input(input)
-      messages = nil
-      begin
-        open(input) do |in_file|
-          messages = in_file.readlines
-        end
-      rescue Errno::ENOENT
-        raise ConfigError.new("Input file `#{input}` is not readable")
-      end
-      idx = -1
-      size = messages.size
-      Proc.new {
-        idx = (idx + 1) % size
-        messages[idx]
-      }
-    end
-
-    def prepare_message_proc_for_message(message)
-      message = "#{message.chomp}\n"
-      Proc.new { message }
-    end
-
-    def prepare_message_proc_for_fields(fields, labeled, delimiter)
-      format_proc = prepare_format_proc(labeled, delimiter)
-      field_procs = prepare_field_procs(fields)
-
-      prev_data = {}
-      Proc.new {
-        data = {}
-        field_procs.each do |key, proc|
-          prev = prev_data[key] || -1
-          data[key] = proc.call(prev)
-        end
-        prev_data = data
-        format_proc.call(data)
-      }
-    end
-
-    def prepare_format_proc(labeled, delimiter)
-      if labeled
-        Proc.new {|fields| "#{fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)}\n" }
-      else
-        Proc.new {|fields| "#{fields.values.join(delimiter)}\n" }
-      end
-    end
-
-    def prepare_field_procs(fields)
-      rand = ::Dummer::Random.new
-      field_procs = {}
-      fields.each do |key, opts|
-        opts = opts.dup
-        type = opts.delete(:type)
-        if rand.respond_to?(type)
-          field_procs[key] = rand.send(type, opts)
-        else
-          raise ConfigError.new(type)
-        end
-      end
-      field_procs
     end
 
     def generate
       @message_proc.call
+    end
+
+    class Message
+      def self.message_proc(message)
+        message = "#{message.chomp}\n"
+        Proc.new { message }
+      end
+    end
+
+    class Input
+      def self.message_proc(input)
+        messages = nil
+        begin
+          open(input) do |in_file|
+            messages = in_file.readlines
+          end
+        rescue Errno::ENOENT
+          raise ConfigError.new("Input file `#{input}` is not readable")
+        end
+        idx = -1
+        size = messages.size
+        Proc.new {
+          idx = (idx + 1) % size
+          messages[idx]
+        }
+      end
+    end
+
+    class Field
+      def self.message_proc(fields, labeled, delimiter)
+        format_proc = format_proc(labeled, delimiter)
+        field_procs = field_procs(fields)
+
+        prev_data = {}
+        Proc.new {
+          data = {}
+          field_procs.each do |key, proc|
+            prev = prev_data[key] || -1
+            data[key] = proc.call(prev)
+          end
+          prev_data = data
+          format_proc.call(data)
+        }
+      end
+
+      def self.format_proc(labeled, delimiter)
+        if labeled
+          Proc.new {|fields| "#{fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)}\n" }
+        else
+          Proc.new {|fields| "#{fields.values.join(delimiter)}\n" }
+        end
+      end
+
+      def self.field_procs(fields)
+        rand = ::Dummer::Random.new
+        field_procs = {}
+        fields.each do |key, opts|
+          opts = opts.dup
+          type = opts.delete(:type)
+          field_procs[key] =
+            case type
+            when :string
+              rand.string(opts)
+            when :integer
+              rand.integer(opts)
+            when :float
+              rand.float(opts)
+            when :datetime
+              rand.datetime(opts)
+            else
+              raise ConfigError.new(type)
+            end
+        end
+        field_procs
+      end
     end
   end
 
@@ -84,6 +96,20 @@ module Dummer
       @rand = ::Random.new(0)
       @chars = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a # no symbols and multi-bytes for now
     end
+
+    def range(range)
+      rand(range)
+    end
+
+    def any(any)
+      any[rand(any.size-1)]
+    end
+
+    def rand(arg = nil)
+      @rand.rand(arg)
+    end
+
+    # belows are data types
 
     def string(length: 8, any: nil, value: nil)
       if value
@@ -161,18 +187,6 @@ module Dummer
       else
         Proc.new { Time.now.strftime(format) }
       end
-    end
-
-    def range(range)
-      rand(range)
-    end
-
-    def any(any)
-      any[rand(any.size-1)]
-    end
-
-    def rand(arg = nil)
-      @rand.rand(arg)
     end
   end
 end
