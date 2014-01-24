@@ -1,25 +1,25 @@
 require 'thor'
-require 'dummy_log_generator'
+require 'dummer'
 require 'ext/hash/keys'
 require 'ext/hash/except'
 
-module DummyLogGenerator
+module Dummer
   class CLI < Thor
     # options for serverengine
-    class_option :pid_path, :aliases => ["-p"], :type => :string, :default => 'dummy_log_generator.pid'
+    class_option :pid_path, :aliases => ["-p"], :type => :string, :default => 'dummer.pid'
     default_command :start
 
     def initialize(args = [], opts = [], config = {})
       super(args, opts, config)
     end
 
-    desc "start", "Start a dummy_log_generator"
-    option :config,    :aliases => ["-c"], :type => :string, :default => 'dummy_log_generator.conf', :desc => 'Config file'
+    desc "start", "Start a dummer"
+    option :config,    :aliases => ["-c"], :type => :string, :default => 'dummer.conf', :desc => 'Config file'
     option :rate,      :aliases => ["-r"], :type => :numeric, :desc => 'Number of generating messages per second'
     option :output,    :aliases => ["-o"], :type => :string, :desc => 'Output file'
     option :message,   :aliases => ["-m"], :type => :string, :desc => 'Output message'
     # options for serverengine
-    option :daemonize, :aliases => ["-d"], :type => :boolean, :desc => 'Daemonize. Stop with `dummy_log_generator stop`'
+    option :daemonize, :aliases => ["-d"], :type => :boolean, :desc => 'Daemonize. Stop with `dummer stop`'
     option :workers,   :aliases => ["-w"], :type => :numeric, :desc => 'Number of parallels'
     option :worker_type,                   :type => :string, :default => 'process'
     def start
@@ -28,7 +28,7 @@ module DummyLogGenerator
         if options[:config] && File.exists?(options[:config])
           instance_eval(File.read(options[:config]), options[:config])
         else
-          DummyLogGenerator::Dsl.new
+          Dummer::Dsl.new
         end
       @options[:setting] = dsl.setting
       dsl.setting.rate = options[:rate] if options[:rate]
@@ -38,11 +38,11 @@ module DummyLogGenerator
       @options[:workers] ||= dsl.setting.workers
 
       opts = @options.symbolize_keys.except(:config)
-      se = ServerEngine.create(nil, DummyLogGenerator::Worker, opts)
+      se = ServerEngine.create(nil, Dummer::Worker, opts)
       se.run
     end
 
-    desc "stop", "Stops a dummy_log_generator"
+    desc "stop", "Stops a dummer"
     def stop
       pid = File.read(@options["pid_path"]).to_i
 
@@ -50,11 +50,11 @@ module DummyLogGenerator
         Process.kill("QUIT", pid)
         puts "Stopped #{pid}"
       rescue Errno::ESRCH
-        puts "DummyLogGenerator #{pid} not running"
+        puts "Dummer #{pid} not running"
       end
     end
 
-    desc "graceful_stop", "Gracefully stops a dummy_log_generator"
+    desc "graceful_stop", "Gracefully stops a dummer"
     def graceful_stop
       pid = File.read(@options["pid_path"]).to_i
 
@@ -62,11 +62,11 @@ module DummyLogGenerator
         Process.kill("TERM", pid)
         puts "Gracefully stopped #{pid}"
       rescue Errno::ESRCH
-        puts "DummyLogGenerator #{pid} not running"
+        puts "Dummer #{pid} not running"
       end
     end
 
-    desc "restart", "Restarts a dummy_log_generator"
+    desc "restart", "Restarts a dummer"
     def restart
       pid = File.read(@options["pid_path"]).to_i
 
@@ -74,11 +74,11 @@ module DummyLogGenerator
         Process.kill("HUP", pid)
         puts "Restarted #{pid}"
       rescue Errno::ESRCH
-        puts "DummyLogGenerator #{pid} not running"
+        puts "Dummer #{pid} not running"
       end
     end
 
-    desc "graceful_restart", "Graceful restarts a dummy_log_generator"
+    desc "graceful_restart", "Graceful restarts a dummer"
     def graceful_restart
       pid = File.read(@options["pid_path"]).to_i
 
@@ -86,11 +86,11 @@ module DummyLogGenerator
         Process.kill("USR1", pid)
         puts "Gracefully restarted #{pid}"
       rescue Errno::ESRCH
-        puts "DummyLogGenerator #{pid} not running"
+        puts "Dummer #{pid} not running"
       end
     end
 
   end
 end
 
-DummyLogGenerator::CLI.start(ARGV)
+Dummer::CLI.start(ARGV)

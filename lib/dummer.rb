@@ -1,0 +1,6 @@
+require "dummer/version"
+require "dummer/error"
+require "dummer/setting"
+require "dummer/generator"
+require "dummer/worker"
+require "dummer/dsl"

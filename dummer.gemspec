@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'dummy_log_generator/version'
+require 'dummer/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "dummy_log_generator"
-  spec.version       = DummyLogGenerator::VERSION
+  spec.name          = "dummer"
+  spec.version       = Dummer::VERSION
   spec.authors       = ["sonots"]
   spec.email         = ["sonots@gmail.com"]
   spec.description   = %q{Generates dummy log data for Fluentd benchmark}
   spec.summary       = %q{Generates dummy log data for Fluentd benchmark}
-  spec.homepage      = "https://github.com/sonots/dummy_log_generator"
+  spec.homepage      = "https://github.com/sonots/dummer"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

@@ -1,18 +1,18 @@
-# DummyLogGenerator
+# Dummer
 
 Generates dummy log data for Fluentd benchmark. 
 
 This gem includes three executable commands
 
-1. dummy\_log\_generator
-2. dummy\_log\_generator\_simple
-3. dummy\_log\_generator\_yes
+1. dummer
+2. dummer\_simple
+3. dummer\_yes
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'dummy_log_generator'
+    gem 'dummer'
 
 And then execute:
 
@@ -20,17 +20,17 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install dummy_log_generator
+    $ gem install dummer
 
 Run as
 
-    $ dummy_log_generator -c dummy_data_generator.conf
-    $ dummy_log_generator_simple [options]
-    $ dummy_log_generator_yes [options]
+    $ dummer -c dummer.conf
+    $ dummer_simple [options]
+    $ dummer_yes [options]
 
-## dummy\_log\_generator
+## dummer
 
-`dummy_log_generator` allows you to
+`dummer` allows you to
 
 1. specify a rate of generating messages per second, 
 2. determine a log format, and
@@ -41,7 +41,7 @@ Run as
 Create a configuration file. A sample configuration is as follows:
 
 ```ruby
-# dummy_log_generator.conf
+# dummer.conf
 configure 'sample' do
   output "dummy.log"
   rate 500
@@ -60,7 +60,7 @@ end
 Running
 
 ```
-$ dummy_log_genrator -c dummy_log_generator.conf
+$ dummer -c dummer.conf
 ```
 
 Outputs to the `dummy.log` (specified by `output` parameter) file like: 
@@ -74,22 +74,22 @@ id:0424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdat
 ### CLI Options
 
 ```
-$ dummy_log_generator help start
+$ dummer help start
 Usage:
-  dummy_log_generator start
+  dummer start
 
 Options:
   -c, [--config=CONFIG]            # Config file
-                                   # Default: dummy_log_generator.conf
+                                   # Default: dummer.conf
   -r, [--rate=N]                   # Number of generating messages per second
   -o, [--output=OUTPUT]            # Output file
   -m, [--message=MESSAGE]          # Output message
-  -d, [--daemonize]                # Daemonize. Stop with `dummy_log_generator stop`
+  -d, [--daemonize]                # Daemonize. Stop with `dummer stop`
   -w, [--workers=N]                # Number of parallels
       [--worker-type=WORKER_TYPE]
                                    # Default: process
   -p, [--pid-path=PID_PATH]
-                                   # Default: dummy_log_generator.pid
+                                   # Default: dummer.pid
 ```
 
 ### Configuration Parameters
@@ -192,22 +192,22 @@ You can specify following data types to your `field` parameters:
 
     You can specify a fixed float number
 
-## dummy\_log\_generator\_simple
+## dummer\_simple
 
-I created a simple version of `dummy_log_generator` since it can not achieve the maximum system I/O throughputs because of its rich features.
-This simple version, `dummy_log_generator_simple` could  achieve the system I/O limit in my environment. 
+I created a simple version of `dummer` since it can not achieve the maximum system I/O throughputs because of its rich features.
+This simple version, `dummer_simple` could  achieve the system I/O limit in my environment. 
 
 ### Usage
 
 ```
-$ dummy_log_genrator_simple [options]
+$ dummer_simple [options]
 ```
 
 ### Options
 
 ```
 Usage:
-  dummy_log_generator_simple
+  dummer_simple
 
 Options:
       [--sync]             # Set `IO#sync=true`
@@ -222,22 +222,22 @@ Options:
                            # Default: time:2013-11-20 23:39:42 +0900    level:ERROR     method:POST     uri:/api/v1/people      reqtime:3.1983877060667103
 ```
 
-## dummy\_log\_generator\_yes
+## dummer\_yes
 
-I created a wrapped version of `yes` command, `dummy_log_generator_yes`, to confrim that `dummy_log_generator_simple` achieves the maximum system I/O throughputs. 
-I do not use `dummy_log_generator_yes` command anymore because I verified that `dummy_log_generator_simple` achieves the I/O limit, but I will keep this command so that users can do verification experiments with it. 
+I created a wrapped version of `yes` command, `dummer_yes`, to confrim that `dummer_simple` achieves the maximum system I/O throughputs. 
+I do not use `dummer_yes` command anymore because I verified that `dummer_simple` achieves the I/O limit, but I will keep this command so that users can do verification experiments with it. 
 
 ### Usage
 
 ```
-$ dummy_log_genrator_yes [options]
+$ dummer_yes [options]
 ```
 
 ### Options
 
 ```
 Usage:
-  dummy_log_generator_yes
+  dummer_yes
 
 Options:
   -s, [--second=N]         # Duration of running in second
@@ -256,7 +256,7 @@ There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluen
 
 ## Related Articles
 
-* [Fluentd のベンチマークテストに使える dummy_log_generator](http://qiita.com/sonots/items/750da77a18e62852a02f)
+* [Fluentd のベンチマークテストに使える dummer (旧称 dummy_log_generator)](http://qiita.com/sonots/items/750da77a18e62852a02f)
 
 ## ToDO
 

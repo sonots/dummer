@@ -1,3 +1,3 @@
-module DummyLogGenerator
+module Dummer
   class ConfigError < StandardError; end
 end

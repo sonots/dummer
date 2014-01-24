@@ -13,4 +13,4 @@ ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../Gemfile",
 require 'rubygems'
 require 'bundler/setup'
 
-load File.expand_path("../../lib/dummy_log_generator/cli.rb", __FILE__)
+load File.expand_path("../../lib/dummer/cli.rb", __FILE__)

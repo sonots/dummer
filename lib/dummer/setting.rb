@@ -1,4 +1,4 @@
-module DummyLogGenerator
+module Dummer
   class Setting
     attr_accessor :rate, :output, :labeled, :delimiter, :fields, :workers, :message, :input
 

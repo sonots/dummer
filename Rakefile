@@ -10,6 +10,6 @@ task :default => :spec
 
 desc 'Open an irb session preloaded with the gem library'
 task :console do
-    sh 'irb -rubygems -I lib -r dummy_log_generator.rb'
+    sh 'irb -rubygems -I lib -r dummer.rb'
 end
 task :c => :console

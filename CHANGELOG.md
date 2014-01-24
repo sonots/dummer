@@ -8,7 +8,7 @@ Fixes:
 
 Enhancement:
 
-  * Add CLI options to `dummy_log_generator` command
+  * Add CLI options to `dummer` command
 
 ### 0.2.1
 
@@ -22,8 +22,8 @@ Enhancement:
 
   * Add `message` option to write only a specific message
   * Add `input` option to write messges by reading lines of an input file in roration
-  * Add `dummy_log_generator_simple` command
-  * Add `dummy_log_generator_yes` command
+  * Add `dummer_simple` command
+  * Add `dummer_yes` command
 
 ### 0.1.0
 

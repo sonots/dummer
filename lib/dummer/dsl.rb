@@ -1,4 +1,4 @@
-module DummyLogGenerator
+module Dummer
   class Dsl
     attr_reader :setting
 
@@ -22,7 +22,7 @@ module DummyLogGenerator
 end
 
 def configure(title, &block)
-  dsl = DummyLogGenerator::Dsl.new
+  dsl = Dummer::Dsl.new
   dsl.instance_eval(&block)
   dsl
 end

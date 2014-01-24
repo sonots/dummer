@@ -1,6 +1,6 @@
 require 'serverengine'
 
-module DummyLogGenerator
+module Dummer
   module Worker
     BIN_NUM = 10
 

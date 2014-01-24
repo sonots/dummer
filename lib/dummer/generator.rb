@@ -1,4 +1,4 @@
-module DummyLogGenerator
+module Dummer
   class Generator
     def initialize(setting)
       @message_proc =
@@ -60,7 +60,7 @@ module DummyLogGenerator
     end
 
     def prepare_field_procs(fields)
-      rand = ::DummyLogGenerator::Random.new
+      rand = ::Dummer::Random.new
       field_procs = {}
       fields.each do |key, opts|
         opts = opts.dup
