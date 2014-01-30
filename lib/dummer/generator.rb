@@ -9,16 +9,42 @@ module Dummer
         else
           Message.message_proc(setting.message)
         end
+      @record_proc =
+        if fields = setting.fields
+          Field.record_proc(fields)
+        elsif input = setting.input
+          Input.record_proc(input)
+        else
+          Message.record_proc(setting.message)
+        end
+      @tag_proc = Field.tag_proc(setting.tag)
     end
 
-    def generate
+    # @return [String] message
+    def message
       @message_proc.call
+    end
+
+    # @return [String] tag
+    def tag
+      @tag_proc.call
+    end
+
+    # @return [Hash] record
+    def record
+      @record_proc.call
     end
 
     class Message
       def self.message_proc(message)
         message = "#{message.chomp}\n"
         Proc.new { message }
+      end
+
+      def self.record_proc(message)
+        # ToDo: implement parser
+        message_proc = message_proc(message)
+        Proc.new { { "message" => message_proc.call } }
       end
     end
 
@@ -39,11 +65,26 @@ module Dummer
           messages[idx]
         }
       end
+
+      def self.record_proc(input)
+        # ToDo: implement parser
+        message_proc = message_proc(input)
+        Proc.new { { "message" => message_proc.call } }
+      end
     end
 
     class Field
       def self.message_proc(fields, labeled, delimiter)
         format_proc = format_proc(labeled, delimiter)
+        record_proc = record_proc(fields)
+
+        Proc.new {
+          hash = record_proc.call
+          format_proc.call(hash)
+        }
+      end
+
+      def self.record_proc(fields)
         field_procs = field_procs(fields)
 
         prev_data = {}
@@ -54,8 +95,11 @@ module Dummer
             data[key] = proc.call(prev)
           end
           prev_data = data
-          format_proc.call(data)
         }
+      end
+
+      def self.tag_proc(tag_opts)
+        field_procs({"tag" => tag_opts})["tag"]
       end
 
       def self.format_proc(labeled, delimiter)
@@ -83,7 +127,7 @@ module Dummer
             when :datetime
               rand.datetime(opts)
             else
-              raise ConfigError.new(type)
+              raise ConfigError.new("type: `#{type}` is not defined.")
             end
         end
         field_procs
