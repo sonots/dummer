@@ -1,10 +1,13 @@
 module Dummer
   class Setting
     attr_accessor :rate, :output, :labeled, :delimiter, :fields, :workers, :message, :input
+    attr_accessor :host, :port
 
     def initialize
       @rate = 500
       @output = STDOUT
+      @host = nil
+      @port = 24224
       @labeled = true
       @delimiter = "\t"
       @fields = nil

@@ -9,16 +9,29 @@ module Dummer
     end
 
     def reload
-      @generator = Generator.new(config[:setting])
-      @rate = config[:setting].rate
+      setting = config[:setting]
+      @generator = Generator.new(setting)
+      @rate = setting.rate
 
-      output = config[:setting].output
-      if output.respond_to?(:write) and output.respond_to?(:close)
-        @output = output
+      if host = setting.host and port = setting.port
+        @client = Fluent::Logger::FluentLogger.new(nil, :host => host, :port => port)
+      elsif output = setting.output
+        if output.respond_to?(:write) and output.respond_to?(:close)
+          @file = output
+        else
+          @file = open(output, (File::WRONLY | File::APPEND | File::CREAT))
+          @file.sync = true
+        end
       else
-        @output = open(output, (File::WRONLY | File::APPEND | File::CREAT))
-        @output.sync = true
+        raise ConfigError.new("Config parameter `output`, or `host` and `port` do not exist")
       end
+
+      @write_proc =
+        if @client
+          Proc.new {|num| num.times { @client.post("dummer", @generator.generate_record) } }
+        else # @file
+          Proc.new {|num| num.times { @file.write @generator.generate } }
+        end
     end
 
     def run
@@ -28,16 +41,16 @@ module Dummer
         current_time = Time.now.to_i
         BIN_NUM.times do
           break unless (!@stop && Time.now.to_i <= current_time)
-          wait(0.1) { write(batch_num) }
+          wait(0.1) { @write_proc.call(batch_num) }
         end
-        write(residual_num)
+        @write_proc.call(residual_num)
         # wait for next second
         while !@stop && Time.now.to_i <= current_time
           sleep 0.01
         end
       end
     ensure
-      @output.close
+      @file.close
     end
 
     def stop
@@ -45,10 +58,6 @@ module Dummer
     end
 
 private
-
-    def write(num)
-      num.times { @output.write @generator.generate }
-    end
 
     def wait(time)
       start_time = Time.now

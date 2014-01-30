@@ -17,6 +17,8 @@ module Dummer
     option :config,    :aliases => ["-c"], :type => :string, :default => 'dummer.conf', :desc => 'Config file'
     option :rate,      :aliases => ["-r"], :type => :numeric, :desc => 'Number of generating messages per second'
     option :output,    :aliases => ["-o"], :type => :string, :desc => 'Output file'
+    option :host,      :aliases => ["-h"], :type => :string, :desc => 'Host of fluentd process'
+    option :port,      :aliases => ["-p"], :type => :numeric, :desc => 'Port of fluentd process'
     option :message,   :aliases => ["-m"], :type => :string, :desc => 'Output message'
     # options for serverengine
     option :daemonize, :aliases => ["-d"], :type => :boolean, :desc => 'Daemonize. Stop with `dummer stop`'
@@ -30,10 +32,12 @@ module Dummer
         else
           Dummer::Dsl.new
         end
-      @options[:setting] = dsl.setting
       dsl.setting.rate = options[:rate] if options[:rate]
       dsl.setting.output = options[:output] if options[:output]
+      dsl.setting.host = options[:host] if options[:host]
+      dsl.setting.port = options[:port] if options[:port]
       dsl.setting.message = options[:message] if options[:message]
+      @options[:setting] = dsl.setting
       # options for serverengine
       @options[:workers] ||= dsl.setting.workers
 
