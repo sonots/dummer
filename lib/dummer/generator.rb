@@ -17,15 +17,21 @@ module Dummer
         else
           Message.record_proc(setting.message)
         end
+      @tag_proc = Field.tag_proc(setting.tag)
     end
 
     # @return [String] message
-    def generate
+    def message
       @message_proc.call
     end
 
+    # @return [String] tag
+    def tag
+      @tag_proc.call
+    end
+
     # @return [Hash] record
-    def generate_record
+    def record
       @record_proc.call
     end
 
@@ -92,6 +98,10 @@ module Dummer
         }
       end
 
+      def self.tag_proc(tag_opts)
+        field_procs({"tag" => tag_opts})["tag"]
+      end
+
       def self.format_proc(labeled, delimiter)
         if labeled
           Proc.new {|fields| "#{fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)}\n" }
@@ -117,7 +127,7 @@ module Dummer
             when :datetime
               rand.datetime(opts)
             else
-              raise ConfigError.new(type)
+              raise ConfigError.new("type: `#{type}` is not defined.")
             end
         end
         field_procs

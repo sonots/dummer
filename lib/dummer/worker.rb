@@ -14,6 +14,7 @@ module Dummer
       @rate = setting.rate
 
       if host = setting.host and port = setting.port
+        require 'fluent-logger'
         @client = Fluent::Logger::FluentLogger.new(nil, :host => host, :port => port)
       elsif output = setting.output
         if output.respond_to?(:write) and output.respond_to?(:close)
@@ -28,9 +29,9 @@ module Dummer
 
       @write_proc =
         if @client
-          Proc.new {|num| num.times { @client.post("dummer", @generator.generate_record) } }
+          Proc.new {|num| num.times { @client.post(@generator.tag, @generator.record) } }
         else # @file
-          Proc.new {|num| num.times { @file.write @generator.generate } }
+          Proc.new {|num| num.times { @file.write @generator.message } }
         end
     end
 
@@ -50,7 +51,7 @@ module Dummer
         end
       end
     ensure
-      @file.close
+      @file.close if @file
     end
 
     def stop
