@@ -1,3 +1,9 @@
+### 0.3.1 (2014/01/31)
+
+Enhancement:
+
+  * Support posting data to Fluentd process directly
+
 ### 0.3.0 (2014/01/25)
 
 Big Changes:
