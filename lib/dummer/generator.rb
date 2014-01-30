@@ -146,7 +146,7 @@ module Dummer
     end
 
     def any(any)
-      any[rand(any.size-1)]
+      any[rand(any.size)]
     end
 
     def rand(arg = nil)
