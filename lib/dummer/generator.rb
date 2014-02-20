@@ -155,7 +155,8 @@ module Dummer
 
     # belows are data types
 
-    def string(length: 8, any: nil, value: nil)
+    def string(opts = {})
+      length, any, value = (opts[:length] || 8), opts[:any], opts[:value]
       if value
         string = value.to_s
         Proc.new { string }
@@ -166,7 +167,8 @@ module Dummer
       end
     end
 
-    def integer(format: nil, range: nil, countup: false, value: nil)
+    def integer(opts = {})
+      format, range, countup, value = opts[:format], opts[:range], opts[:countup], opts[:value]
       if format
         if value
           integer = sprintf(format, value.to_i)
@@ -192,7 +194,8 @@ module Dummer
       end
     end
 
-    def float(format: nil, range: nil, value: nil)
+    def float(opts = {})
+      format, range, value = opts[:format], opts[:range], opts[:value]
       if format
         if value
           float = value.to_f
@@ -214,7 +217,8 @@ module Dummer
       end
     end
 
-    def datetime(format: "%Y-%m-%d %H:%M:%S.%3N", random: false, value: nil)
+    def datetime(opts = {})
+      format, random, value = (opts[:format] || "%Y-%m-%d %H:%M:%S.%3N"), (opts[:random] || false), opts[:value]
       if value
         Proc.new { value.strftime(format) }
       elsif random
