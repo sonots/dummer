@@ -1,6 +1,6 @@
 module Dummer
   class Setting
-    attr_accessor :rate, :output, :labeled, :delimiter, :fields, :workers, :message, :input
+    attr_accessor :rate, :output, :labeled, :label_delimiter, :delimiter, :fields, :workers, :message, :input
     attr_accessor :host, :port, :tag
 
     def initialize
@@ -9,6 +9,7 @@ module Dummer
       @host = nil
       @port = 24224
       @labeled = true
+      @label_delimiter = ":"
       @delimiter = "\t"
       @tag = {type: :string, value: "dummer"}
       @fields = nil
