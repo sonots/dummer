@@ -1,7 +1,5 @@
 # Dummer
 
-#### NOTE: `dummy_log_generator` was renamed to `dummer`
-
 Dummer is a set of tools to generate dummy log data for Fluentd benchmark. 
 
 This gem includes three executable commands
@@ -314,7 +312,8 @@ Options:
 
 ## Relatives
 
-There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummy data to a log file, and I wanted a standalone tool.
+There is a [fluent-plugin-dummydata-producer](https://github.com/tagomoris/fluent-plugin-dummydata-producer), but I wanted to output dummy data to a log file, 
+and I wanted a standalone separated tool to do benchmark.
 
 ## Related Articles
 
