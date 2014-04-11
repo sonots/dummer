@@ -3,7 +3,7 @@ module Dummer
     def initialize(setting)
       @message_proc =
         if fields = setting.fields
-          Field.message_proc(fields, setting.labeled, setting.delimiter, setting.label_separator)
+          Field.message_proc(fields, setting.labeled, setting.delimiter, setting.label_delimiter)
         elsif input = setting.input
           Input.message_proc(input)
         else
@@ -74,8 +74,8 @@ module Dummer
     end
 
     class Field
-      def self.message_proc(fields, labeled, delimiter, label_separator)
-        format_proc = format_proc(labeled, delimiter, label_separator)
+      def self.message_proc(fields, labeled, delimiter, label_delimiter)
+        format_proc = format_proc(labeled, delimiter, label_delimiter)
         record_proc = record_proc(fields)
 
         Proc.new {
@@ -102,10 +102,9 @@ module Dummer
         field_procs({"tag" => tag_opts})["tag"]
       end
 
-      def self.format_proc(labeled, delimiter, label_separator)
+      def self.format_proc(labeled, delimiter, label_delimiter)
         if labeled
-          # Proc.new {|fields| "#{fields.map {|key, val| "#{key}:#{val}" }.join(delimiter)}\n" }
-          Proc.new {|fields| "#{fields.map {|key, val| "#{key}" + label_separator + "#{val}" }.join(delimiter)}\n" }
+          Proc.new {|fields| "#{fields.map {|key, val| "#{key}#{label_delimiter}#{val}" }.join(delimiter)}\n" }
         else
           Proc.new {|fields| "#{fields.values.join(delimiter)}\n" }
         end
