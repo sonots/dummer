@@ -167,6 +167,10 @@ Following parameters in the configuration file are available:
 
     Whether add field name as a label or not. Default: true
 
+* label_delimiter
+
+    Specify the delimiter between the label and the value. Default: ":" (column)
+
 * tag
 
     Define tag field to generate. This is effective only for posting data to fluentd process with `host` and `port`.

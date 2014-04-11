@@ -1,3 +1,9 @@
+### 0.3.4 (2014/04/12)
+
+Enhancements:
+
+  * Add `label_delimiter` option. #4 (thanks suzuken)
+
 ### 0.3.3 (2014/02/20)
 
 Enhancement:
