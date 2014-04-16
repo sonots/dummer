@@ -40,6 +40,7 @@ module Dummer
       @options[:setting] = dsl.setting
       # options for serverengine
       @options[:workers] ||= dsl.setting.workers
+      @options[:log] = '-'
 
       opts = @options.symbolize_keys.except(:config)
       se = ServerEngine.create(nil, Dummer::Worker, opts)
