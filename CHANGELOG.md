@@ -1,3 +1,13 @@
+### 0.3.5 (2014/04/23)
+
+Enhancements:
+
+  * Add `--log` option to `dummer`
+
+Changes:
+
+  * Dummer log goes to STDOUT rather than STDERR as default
+
 ### 0.3.4 (2014/04/12)
 
 Enhancements:
