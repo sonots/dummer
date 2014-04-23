@@ -23,6 +23,7 @@ module Dummer
     # options for serverengine
     option :daemonize, :aliases => ["-d"], :type => :boolean, :desc => 'Daemonize. Stop with `dummer stop`'
     option :workers,   :aliases => ["-w"], :type => :numeric, :desc => 'Number of parallels'
+    option :log,       :aliases => ["-l"], :type => :string, :desc => 'Dummer Log File'
     option :worker_type,                   :type => :string, :default => 'process'
     def start
       @options = @options.dup # avoid frozen
@@ -40,6 +41,7 @@ module Dummer
       @options[:setting] = dsl.setting
       # options for serverengine
       @options[:workers] ||= dsl.setting.workers
+      @options[:log] ||= dsl.setting.log
 
       opts = @options.symbolize_keys.except(:config)
       se = ServerEngine.create(nil, Dummer::Worker, opts)
