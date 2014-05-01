@@ -75,14 +75,14 @@ id:0424  time:[2013-11-19 02:34:58]  level:WARN  method:POST uri:/api/v1/textdat
 
 (experimental)
 
-Create a configuration file. Assume that a fluentd process is running on localhost:20000.
+Create a configuration file. Assume that a fluentd process is running on localhost:24224.
 A sample configuration is as follows:
 
 ```ruby
 # dummer.conf
 configure 'sample' do
   host "localhost" # define `host` and `port` instead of `output`
-  port 20000
+  port 24224
   rate 500
   tag type: string, any: %w[raw.syslog raw.message raw.nginx] # configure tag
   field :id, type: :integer, countup: true, format: "%04d"
