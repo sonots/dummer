@@ -322,7 +322,6 @@ and I wanted a standalone separated tool to do benchmark.
 ## ToDO
 
 1. write tests
-2. Add an option to send data to fluentd directly
 
 ## Contributing
 
