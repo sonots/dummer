@@ -92,9 +92,10 @@ module Dummer
           data = {}
           field_procs.each do |key, proc|
             prev = prev_data[key] || -1
-            data[key] = proc.call(prev)
+            data[key], prev_candidate = proc.call(prev)
+            prev_data[key] = prev_candidate || data[key]
           end
-          prev_data = data
+          data
         }
       end
 
@@ -176,7 +177,7 @@ module Dummer
         elsif range
           Proc.new { sprintf(format, self.range(range)) }
         elsif countup
-          Proc.new {|prev| sprintf(format, prev.to_i + 1) }
+          Proc.new {|prev| [sprintf(format, prev + 1), prev + 1] }
         else
           Proc.new { sprintf(format, rand(0..2,147,483,647)) }
         end
