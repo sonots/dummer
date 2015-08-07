@@ -175,15 +175,15 @@ Following parameters in the configuration file are available:
 
 * field
 
-    Define data fields to generate. `message` and `input` options are ignored. 
-
-* input
-
-    Use this if you want to write messages by reading lines of an input file in rotation. `message` is ignored.
+    Random field generator mode. Define data fields to generate. `message` and `input` options are ignored. See also `Field Data Types` section below.
 
 * message
 
-    Use this if you want to write only a specific message. 
+    Specific message generation mode. See [message.conf](./example/message.conf) as an example. This mode works pretty fast because it does not require to generate values randomly. 
+
+* input
+
+    Messages taken from an input file mode.  Use this if you want to write messages by reading lines of an input file in rotation. `message` option is ignored. See [input.conf](./example/input.conf) as an example. This mode also works fast.
 
 ### Field Data Types
 
