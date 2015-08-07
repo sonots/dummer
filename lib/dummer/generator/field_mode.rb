@@ -1,6 +1,7 @@
 module Dummer
   class Generator
     class FieldMode < AbstractMode
+      # file
       def self.message_proc(fields, labeled, delimiter, label_delimiter)
         format_proc = format_proc(labeled, delimiter, label_delimiter)
         record_proc = record_proc(fields)
@@ -11,6 +12,7 @@ module Dummer
         }
       end
 
+      # fluent-logger
       def self.record_proc(fields)
         field_procs = field_procs(fields)
 
@@ -27,6 +29,7 @@ module Dummer
         }
       end
 
+      # fluent-logger
       def self.tag_proc(tag_opts)
         proc = field_procs({"tag" => tag_opts})["tag"]
         prev = -1
