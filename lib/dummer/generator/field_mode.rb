@@ -19,14 +19,22 @@ module Dummer
           data = {}
           field_procs.each do |key, proc|
             prev = prev_data[key] || -1
-            data[key] = proc.call(prev)
+            value, raw = proc.call(prev)
+            data[key] = value
+            prev_data[key] = raw || value
           end
-          prev_data = data
+          data
         }
       end
 
       def self.tag_proc(tag_opts)
-        field_procs({"tag" => tag_opts})["tag"]
+        proc = field_procs({"tag" => tag_opts})["tag"]
+        prev = -1
+        Proc.new {
+          value, raw = proc.call(prev)
+          prev = raw || value
+          value
+        }
       end
 
       # private

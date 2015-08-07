@@ -6,7 +6,7 @@ module Dummer
     end
 
     # belows are data types
-    # @return Proc object which returns random generated value
+    # @return Proc object which returns a random generated value, or [formatted_value, raw_value]
 
     def string(opts = {})
       length, any, value = (opts[:length] || 8), opts[:any], opts[:value]
@@ -29,7 +29,7 @@ module Dummer
         elsif range
           Proc.new { sprintf(format, self.range(range)) }
         elsif countup
-          Proc.new {|prev| sprintf(format, prev.to_i + 1) }
+          Proc.new {|prev| v = prev + 1; [sprintf(format, v), v] }
         else
           Proc.new { sprintf(format, rand(0..2,147,483,647)) }
         end
