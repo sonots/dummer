@@ -1,3 +1,13 @@
+### 0.4.0 (2015/08/08)
+
+Enhancements:
+
+  * Make countup integer field stores integer instead of formatted string as prev_data (thanks to mururu)
+
+Changes:
+
+  * Refactoring: split generator codes
+
 ### 0.3.5 (2014/04/23)
 
 Enhancements:
