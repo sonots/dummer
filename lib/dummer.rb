@@ -1,6 +1,12 @@
 require "dummer/version"
 require "dummer/error"
 require "dummer/setting"
+require 'dummer/random'
 require "dummer/generator"
+require 'dummer/generator/abstract_mode'
+require 'dummer/generator/message_mode'
+require 'dummer/generator/input_mode'
+require 'dummer/generator/field_mode'
+require 'dummer/generator/factory'
 require "dummer/worker"
 require "dummer/dsl"
