@@ -1,6 +1,6 @@
 # Dummer
 
-Dummer is a set of tools to generate dummy log data for Fluentd benchmark. 
+Dummer is a set of tools to generate dummy log data. I made this for Fluentd benchmark. 
 
 This gem includes three executable commands
 
