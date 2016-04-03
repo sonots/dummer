@@ -84,7 +84,7 @@ configure 'sample' do
   host "localhost" # define `host` and `port` instead of `output`
   port 24224
   rate 500
-  tag type: string, any: %w[raw.syslog raw.message raw.nginx] # configure tag
+  tag type: :string, any: %w[raw.syslog raw.message raw.nginx] # configure tag
   field :id, type: :integer, countup: true, format: "%04d"
   field :level, type: :string, any: %w[DEBUG INFO WARN ERROR]
   field :method, type: :string, any: %w[GET POST PUT]
