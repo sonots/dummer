@@ -251,7 +251,7 @@ You can specify following data types to your `tag` and `field` parameters:
 
 ## dummer\_simple
 
-I created a simple version of `dummer` since it can not achieve the maximum system I/O throughputs because of its rich features.
+I created a simple version of `dummer` since `dummer` could not achieve the maximum system I/O throughputs because of its rich features.
 This simple version, `dummer_simple` could  achieve the system I/O limit in my environment. 
 
 Sorry, but this simple script cannot post data to fluentd process, supports only writing to a file.
