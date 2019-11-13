@@ -1,3 +1,9 @@
+### 0.4.1 (2019/11/13)
+
+Fixes:
+
+  * Support running without Bundler (thanks to kou)
+
 ### 0.4.0 (2015/08/08)
 
 Enhancements:
